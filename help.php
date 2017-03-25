@@ -37,7 +37,7 @@ $ww = mysqli_fetch_row($res);
 <tr><th>Wegwijzers met co&ouml;rdinaten</th><td><?php echo number_format($ww[1], 0, ',', '.'); ?> (<?php echo number_format($ww[1]/$ww[0]*100, 0, ',', '.'); ?>%)</td></tr>
 <tr><th>Wegwijzers met specificatietekening</th><td><?php echo number_format($ww[2], 0, ',', '.'); ?> (<?php echo number_format($ww[2]/$ww[0]*100, 0, ',', '.'); ?>%)</td></tr>
 </table>
-<p>Bij klachten over de compleetheid van de open dataset kan direct contact worden opgenomen met de <a href="http://www.bewegwijzeringsdienst.nl/contact/">Nationale Bewegwijzeringsdienst</a>.</p>
+<p>Voor meer informatie over de open dataset wordt verwezen naar de <a href="https://www.bewegwijzeringsdienst.nl/home/producten-en-diensten/open-data/">Nationale Bewegwijzeringsdienst</a>.</p>
 
 <h1>Contact</h1>
 <p>Stuur bij vragen, opmerkingen, suggesties of klachten over deze website een e-mail naar <img src="contact.png" width="103" height="18" alt="contact" style="vertical-align:text-top;">.</p>

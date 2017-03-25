@@ -91,7 +91,7 @@ function initMap() {
 
 //waarschuwing wanneer niet ver genoeg ingezoomd
 function set_zoom_warning() {
-	if (map.getZoom() < 13) {
+	if (map.getZoom() < 14) {
 		if($('#zoomwarning').length == 0) {
 			$('body').append('<div class="warning" id="zoomwarning">Zoom verder in om kruispunten te bekijken.</div>');
 		}
@@ -116,7 +116,7 @@ function set_map_center(strlatlng) {
 function draw_kruispunten() {
 	var pointskept = [];
 	for (var i = kruispunten.length - 1; i >= 0; i--) {
-		if ((map.getBounds().contains(kruispunten[i].getPosition())) && (map.getZoom() >= 13) && (map.getZoom() < 18)) {
+		if ((map.getBounds().contains(kruispunten[i].getPosition())) && (map.getZoom() >= 14) && (map.getZoom() < 18)) {
 			pointskept.push(kruispunten[i].x_id);
 		}
 		else {
@@ -124,8 +124,8 @@ function draw_kruispunten() {
 			kruispunten.splice(i, 1);
 		}
 	}
-	if ((map.getZoom() >= 13) && (map.getZoom() < 18)) {
-		//draw hecto
+	if ((map.getZoom() >= 14) && (map.getZoom() < 18)) {
+		//draw markers
 		$.getJSON( "ajax.php", {type: "kp", bounds: map.getBounds().toString()} )
 		.done(function( json ) {
 			if (json != null) {
@@ -169,7 +169,7 @@ function draw_wegwijzers() {
 		}
 	}
 	if (map.getZoom() >= 18) {
-		//draw hecto
+		//draw markers
 		$.getJSON( "ajax.php", {type: "ww", bounds: map.getBounds().toString()} )
 		.done(function( json ) {
 			if (json != null) {

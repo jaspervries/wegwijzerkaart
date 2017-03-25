@@ -69,5 +69,5 @@ foreach($main_dir_folders[1] as $folder) {
 		}
 	}
 }
-echo 'Verwerkingstijd: '.floor((time()-$start_time)/60).':'.((time()-$start_time)%60);
+echo 'Verwerkingstijd: '.floor((time()-$start_time)/60).':'.str_pad(((time()-$start_time)%60), 2, '0', STR_PAD_LEFT);
 ?>

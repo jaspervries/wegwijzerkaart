@@ -21,6 +21,31 @@ $db['link'] = mysqli_connect($cfg_db['host'], $cfg_db['user'], $cfg_db['pass'], 
 mysqli_set_charset($db['link'], "latin1");
 set_time_limit(0);
 $start_time = time();
+$totalfilesize = 0;
+
+//function to convert filesizes in K, M or G to bytes
+function KMGtoBytes($val) {
+	$factor = 1000; //use 1000 for SI-bytes or 1024 for binary bytes
+	if (is_numeric($val)) {
+		return $val;
+	}
+	if (!is_numeric(substr($val, 0, -1))) {
+		return FALSE;
+	}
+	$suffix = substr($val, -1);
+	if ($suffix == 'K') {
+		return $val * $factor;
+	}
+	elseif ($suffix == 'M') {
+		return $val * pow($factor, 2);
+	}
+	elseif ($suffix == 'G') {
+		return $val * pow($factor, 3);
+	}	
+	else {
+		return FALSE;
+	}
+}
 
 //haal hoofdpagina op
 $html = file_get_contents($cfg_resource['image_base']);
@@ -35,13 +60,17 @@ foreach($main_dir_folders[1] as $folder) {
 		//haal kruispuntpagina op
 		$html = file_get_contents($cfg_resource['image_base'].$folder.$kruispunt);
 		//kruispuntschets
-		if (preg_match('#<tr>.*\[IMG].*href="(([0-9]{5})K\.png)"#Ui', $html, $res) > 0) {
+		if (preg_match('#<tr>.*\[IMG].*href="((\d{5})K\.png)".*(\d{2}-[a-z]+-\d{4} \d{2}:\d{2}).*(\d+\.?\d*[KMG])#Ui', $html, $res) > 0) {
 			$kp_nr = $res[2];
 			$img = $res[1];
-			echo $kp_nr.':'.$img.PHP_EOL;
+			$date = $res[3];
+			$size = $res[4];
+			$totalfilesize += KMGtoBytes($size);
+			echo $kp_nr . "\t\t" . $img . "\t" . $date . "\t" . $size . PHP_EOL;
 			//update database
 			$qry = "UPDATE `kp` SET 
-			`afbeelding` = '".mysqli_real_escape_string($db['link'], $img)."'
+			`afbeelding` = '".mysqli_real_escape_string($db['link'], $img)."',
+			`afbeelding_datum` = '".date('Y-m-d H:i:s', strtotime($date))."'
 			WHERE
 			`kp_nr` = '".mysqli_real_escape_string($db['link'], $kp_nr)."'
 			AND
@@ -49,15 +78,19 @@ foreach($main_dir_folders[1] as $folder) {
 			mysqli_query($db['link'], $qry);
 		}
 		//specificatie wegwijzers
-		if (preg_match_all('#<tr>.*\[IMG].*href="(([0-9]{5})([0-9]{3})S\.png)"#Ui', $html, $res, PREG_SET_ORDER) > 0) {
+		if (preg_match_all('#<tr>.*\[IMG].*href="(([0-9]{5})([0-9]{3})S\.png)".*(\d{2}-[a-z]+-\d{4} \d{2}:\d{2}).*(\d+\.?\d*[KMG])#Ui', $html, $res, PREG_SET_ORDER) > 0) {
 			foreach($res as $item) {
 				$kp_nr = $item[2];
 				$ww_nr = $item[3];
 				$img = $item[1];
-				echo $kp_nr.'/'.$ww_nr.':'.$img.PHP_EOL;
+				$date = $item[4];
+				$size = $item[5];
+				$totalfilesize += KMGtoBytes($size);
+				echo $kp_nr.'/'.$ww_nr . "\t" . $img . "\t" . $date . "\t" . $size . PHP_EOL;
 				//update database
 				$qry = "UPDATE `ww` SET 
-				`afbeelding` = '".mysqli_real_escape_string($db['link'], $img)."'
+				`afbeelding` = '".mysqli_real_escape_string($db['link'], $img)."',
+				`afbeelding_datum` = '".date('Y-m-d H:i:s', strtotime($date))."'
 				WHERE
 				`kp_nr` = '".mysqli_real_escape_string($db['link'], $kp_nr)."'
 				AND
@@ -69,5 +102,6 @@ foreach($main_dir_folders[1] as $folder) {
 		}
 	}
 }
-echo 'Verwerkingstijd: '.floor((time()-$start_time)/60).':'.str_pad(((time()-$start_time)%60), 2, '0', STR_PAD_LEFT);
+echo 'Verwerkingstijd: '.floor((time()-$start_time)/60).':'.str_pad(((time()-$start_time)%60), 2, '0', STR_PAD_LEFT) . PHP_EOL;
+echo 'Totale bestandsgrootte afbeeldingen: ' . $totalfilesize . ' bytes (' . round($totalfilesize/pow(1000,3),3) . 'G)';
 ?>

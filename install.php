@@ -82,6 +82,15 @@ else {
 	else echo 'did not create table `kp`'.PHP_EOL;
 	echo mysqli_error($db['link']).PHP_EOL;
 	
+	$qry = "ALTER TABLE `kp`
+	ADD
+	`afbeelding_datum` DATETIME NULL
+	AFTER
+	`afbeelding`";
+	if (mysqli_query($db['link'], $qry)) echo 'table `kp` modified'.PHP_EOL;
+	else echo 'did not modify table `kp`'.PHP_EOL;
+	echo mysqli_error($db['link']).PHP_EOL;
+	
 	$qry = "CREATE TABLE IF NOT EXISTS `ww`
 	(
 		`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -106,6 +115,15 @@ else {
 	else echo 'did not create table `ww`'.PHP_EOL;
 	echo mysqli_error($db['link']).PHP_EOL;
 	
+	$qry = "ALTER TABLE `ww`
+	ADD
+	`afbeelding_datum` DATETIME NULL
+	AFTER
+	`afbeelding`";
+	if (mysqli_query($db['link'], $qry)) echo 'table `ww` modified'.PHP_EOL;
+	else echo 'did not modify table `ww`'.PHP_EOL;
+	echo mysqli_error($db['link']).PHP_EOL;
+	
 	/* unused
 	//create store
 	if (!is_dir('store')) {
@@ -113,6 +131,9 @@ else {
 		$subdirs = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
 		foreach ($subdirs as $subdir) {
 			mkdir('store/'.$subdir);
+			foreach ($subdirs as $subsubdir) {
+				mkdir('store/'.$subdir.'/'.$subsubdir);
+			}
 		}
 		echo 'created store directories'.PHP_EOL;
 	}

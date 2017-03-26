@@ -1,7 +1,7 @@
 <?php
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016 Jasper Vries
+Copyright (C) 2016-2017 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -30,9 +30,10 @@ $cfg_db[\'pass\'] = \'\';
 $cfg_db[\'db\'] = \'wwk\';
 
 //Resources
-$cfg_resource[\'KP.txt\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/KP.txt\';
-$cfg_resource[\'WW.txt\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/WW.txt\';
-$cfg_resource[\'kpxy.txt\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/kpxy.txt\';
+$cfg_resource[\'KP\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/KP.TXT\';
+$cfg_resource[\'WW\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/WW.TXT\';
+$cfg_resource[\'kpxy\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/kpxy.csv\';
+$cfg_resource[\'wwxy\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/wwxy.csv\';
 $cfg_resource[\'image_base\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/\'; //with trailing slash
 
 //Google

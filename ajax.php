@@ -1,7 +1,7 @@
 <?php 
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016 Jasper Vries
+Copyright (C) 2016-2017 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -81,7 +81,7 @@ if ($_GET['type'] == 'dialogkp') {
 	$html = 'Kan kruispuntgegevens niet laden.';
 	$kp_nr = 'n/b';
 	$qry = "SELECT * FROM `kp` WHERE `id` = '".mysqli_real_escape_string($db['link'], $_GET['id'])."' LIMIT 1";
-	if ($_GET['alt'] == 'true') $qry = "SELECT * FROM `kp` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $_GET['id'])."' LIMIT 1";
+	if ($_GET['alt'] == 'true') $qry = "SELECT * FROM `kp` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $_GET['id'])."' AND `actueel` = 1 LIMIT 1";
 	$res = mysqli_query($db['link'], $qry);
 	if (mysqli_num_rows($res)) {
 		$data = mysqli_fetch_assoc($res);
@@ -121,7 +121,7 @@ if ($_GET['type'] == 'dialogww') {
 	$html = 'Kan wegwijzergegevens niet laden.';
 	$kp_nr = 'n/b';
 	$qry = "SELECT * FROM `ww` WHERE `id` = '".mysqli_real_escape_string($db['link'], $_GET['id'])."' LIMIT 1";
-	if ($_GET['alt'] == 'true') $qry = "SELECT * FROM `ww` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], substr($_GET['id'], 0, 5))."' AND `ww_nr` = '".mysqli_real_escape_string($db['link'], substr($_GET['id'], 5, 3))."' LIMIT 1";
+	if ($_GET['alt'] == 'true') $qry = "SELECT * FROM `ww` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], substr($_GET['id'], 0, 5))."' AND `ww_nr` = '".mysqli_real_escape_string($db['link'], substr($_GET['id'], 5, 3))."' AND `actueel` = 1 LIMIT 1";
 	$html = $qry;
 	$res = mysqli_query($db['link'], $qry);
 	if (mysqli_num_rows($res)) {

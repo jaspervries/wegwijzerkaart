@@ -91,6 +91,7 @@ if ($_GET['type'] == 'dialogkp') {
 		$html .= '<tr><td>kruispunt:</td><td>'.htmlspecialchars($data['naam']).'</td></tr>';
 		$html .= '<tr><td>gemeente:</td><td>'.htmlspecialchars(ucwords(strtolower($data['gemeente']))).'</td></tr>';
 		$html .= '<tr><td>provincie:</td><td>'.(array_key_exists($data['provincie'], $ww_types['provincie']) ? $ww_types['provincie'][$data['provincie']] : htmlspecialchars($data['provincie'])).'</td></tr>';
+		$html .= '<tr><td>WGS 84:</td><td>'.(!empty($data['lat']) ? round($data['lat'],7).','.round($data['lng'],7) : 'onbekend').'</td></tr>';
 		$html .= '</table>';
 		$qry = "SELECT `id`, `ww_nr`, `type_wegwijzer` FROM `ww` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $data['kp_nr'])."' AND `actueel` = 1 ORDER BY `ww_nr`";
 		$res = mysqli_query($db['link'], $qry);
@@ -132,6 +133,7 @@ if ($_GET['type'] == 'dialogww') {
 		$html .= '<tr><td>wegwijzernummer:</td><td><span class="kp-nr-dialog">'.$kp_nr.'</span>/'.$ww_nr.'</td></tr>';
 		$html .= '<tr><td>gemeente:</td><td>'.htmlspecialchars(ucwords(strtolower($data['gemeente']))).'</td></tr>';
 		$html .= '<tr><td>provincie:</td><td>'.(array_key_exists($data['provincie'], $ww_types['provincie']) ? $ww_types['provincie'][$data['provincie']] : htmlspecialchars($data['provincie'])).'</td></tr>';
+		$html .= '<tr><td>WGS 84:</td><td>'.(!empty($data['lat']) ? round($data['lat'],7).','.round($data['lng'],7) : 'onbekend').'</td></tr>';
 		$html .= '<tr><td>uitvoering:</td><td>'.(array_key_exists($data['uitvoering'], $ww_types['uitvoering']) ? $ww_types['uitvoering'][$data['uitvoering']] : $data['uitvoering']).'</td></tr>';
 		$html .= '<tr><td>type wegwijzer:</td><td>'.(array_key_exists($data['type_wegwijzer'], $ww_types['type_wegwijzer']) ? $ww_types['type_wegwijzer'][$data['type_wegwijzer']] : $data['type_wegwijzer']).'</td></tr>';
 		$html .= '<tr><td>type constructie:</td><td>'.(array_key_exists($data['type_constructie'], $ww_types['type_constructie']) ? $ww_types['type_constructie'][$data['type_constructie']] : $data['type_constructie']).'</td></tr>';

@@ -19,11 +19,6 @@ geladen vanaf de open data server.
 ========================================================================
 
 1. Systeemvereisten en benodigdheden
-2. Voorbereiding
-    2.1 Lettertypen
-    2.2 Pictogrammen
-    2.3 Regelsymbolen
-    2.4 Spritetabel genereren
 3. Installatie
 6. Licentie
 7. Verkrijgen van de broncode
@@ -89,7 +84,7 @@ volledige licentietekst in license.txt.
 
 
 Wegwijzerkaart - grafische interface voor nationale bewegwijzering open data
-Copyright (C) 2016 Jasper Vries
+Copyright (C) 2016-2017 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 

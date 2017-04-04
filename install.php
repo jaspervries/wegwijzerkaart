@@ -91,6 +91,15 @@ else {
 	else echo 'did not modify table `kp`'.PHP_EOL;
 	echo mysqli_error($db['link']).PHP_EOL;
 	
+	$qry = "ALTER TABLE `kp`
+	ADD
+	`md5` VARCHAR(32) NULL
+	AFTER
+	`afbeelding_datum`";
+	if (mysqli_query($db['link'], $qry)) echo 'table `kp` modified'.PHP_EOL;
+	else echo 'did not modify table `kp`'.PHP_EOL;
+	echo mysqli_error($db['link']).PHP_EOL;
+	
 	$qry = "CREATE TABLE IF NOT EXISTS `ww`
 	(
 		`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -124,7 +133,15 @@ else {
 	else echo 'did not modify table `ww`'.PHP_EOL;
 	echo mysqli_error($db['link']).PHP_EOL;
 	
-	/* unused
+	$qry = "ALTER TABLE `ww`
+	ADD
+	`md5` VARCHAR(32) NULL
+	AFTER
+	`afbeelding_datum`";
+	if (mysqli_query($db['link'], $qry)) echo 'table `ww` modified'.PHP_EOL;
+	else echo 'did not modify table `ww`'.PHP_EOL;
+	echo mysqli_error($db['link']).PHP_EOL;
+	
 	//create store
 	if (!is_dir('store')) {
 		mkdir('store');
@@ -137,6 +154,5 @@ else {
 		}
 		echo 'created store directories'.PHP_EOL;
 	}
-	*/
 }
 ?>

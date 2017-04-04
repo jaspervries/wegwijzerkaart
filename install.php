@@ -35,6 +35,7 @@ $cfg_resource[\'WW\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata
 $cfg_resource[\'kpxy\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/kpxy.csv\';
 $cfg_resource[\'wwxy\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/wwxy.csv\';
 $cfg_resource[\'image_base\'] = \'http://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/\'; //with trailing slash
+$cfg_resource[\'uselocalimages\'] = TRUE; //toon lokale kruispuntplaatjes en specificatiestaten (TRUE) of verwijs altijd naar afbeeldingen op opendataportaal (FALSE)
 
 //Google
 $cfg_google[\'maps_key\'] = \'\'; //Google Maps API key

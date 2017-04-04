@@ -109,12 +109,17 @@ if ($_GET['type'] == 'dialogkp') {
 			}
 			$html .= '</div>';
 		}
-		if (!empty($data['afbeelding'])) {
+		if (($cfg_resource['uselocalimages'] == TRUE) && (!empty($data['md5']))) {
+			$file = 'store/' . substr($data['md5'],0,1) . '/' . substr($data['md5'],1,1) . '/' . $data['md5'] . '.png';
+			$html .= '<img src="'.$file.'" width="100%" alt="Kruispuntschets '.$kp_nr.'">';
+		}
+		elseif (!empty($data['afbeelding'])) {
 			$html .= '<img src="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/'.urlencode($data['afbeelding']).'" width="100%" alt="Kruispuntschets '.$kp_nr.'">';
 		}
 		else {
 			$html .= '<p class="warning">Geen kruispuntschets beschikbaar voor dit kruispunt.</p>';
 		}
+		$html .= '<p><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Naar opendataportaal</a></p>';
 	}
 	//return json
 	header('Content-type: application/json');
@@ -144,12 +149,17 @@ if ($_GET['type'] == 'dialogww') {
 			$html .= '<tr><td>publicatiedatum specificatie:</td><td>'.date('d-m-Y H:i', strtotime($data['afbeelding_datum'])).'</td></tr>';
 		}
 		$html .= '</table>';
-		if (!empty($data['afbeelding'])) {
+		if (($cfg_resource['uselocalimages'] == TRUE) && (!empty($data['md5']))) {
+			$file = 'store/' . substr($data['md5'],0,1) . '/' . substr($data['md5'],1,1) . '/' . $data['md5'] . '.png';
+			$html .= '<img src="'.$file.'" width="100%" alt="Specificatie wegwijzer '.$kp_nr.'/'.$ww_nr.'">';
+		}
+		elseif (!empty($data['afbeelding'])) {
 			$html .= '<img src="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/'.urlencode($data['afbeelding']).'" width="100%" alt="Specificatie wegwijzer '.$kp_nr.'/'.$ww_nr.'">';
 		}
 		else {
 			$html .= '<p class="warning">Geen specificatie beschikbaar voor deze wegwijzer.</p>';
 		}
+		$html .= '<p><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Naar opendataportaal</a></p>';
 	}
 	//return json
 	header('Content-type: application/json');

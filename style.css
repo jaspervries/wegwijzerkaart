@@ -137,6 +137,9 @@ ul.toolbartab li a, ul.toolbartab li span {
 	padding: 4px;	
 	cursor: pointer;
 }
+#li-autozoom {
+		padding: 4px;
+}
 
 ul.toolbartab li span.searchbox {
 	padding: 2px;

@@ -20,6 +20,7 @@
 
 <div id="navigation">
     <ul class="toolbartab">
+    	<li id="li-autozoom" title="Schakel deze optie in om automatisch in te zoomen en te centreren bij het selecteren van een kruispunt op de kaart."><input type="checkbox" checked id="autozoom"><label for="autozoom">automatisch zoomen</label></li>
         <li><span class="searchbox"><input type="text" id="searchbox" placeholder="Zoeken"></span></li>
         <!--<li><a href="help.php" rel="index" id="advancedsearch">Geavanceerd zoeken</a></li>-->
         <li><span id="help">Help</span></li>

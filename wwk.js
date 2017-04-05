@@ -145,8 +145,10 @@ function draw_kruispunten() {
 						});
 						//bind click event
 						google.maps.event.addListener(marker, 'click', function() {
-							map.setCenter(marker.position);
-							map.setZoom(18);
+							if ($('#autozoom').prop( "checked" ) == true) {
+								map.setCenter(marker.position);
+								map.setZoom(18);
+							}
 							open_dialog('kp', marker.x_id);
 						});
 						kruispunten.push(marker);

@@ -2,3 +2,4 @@
 .diff$
 ^resources/
 ^store/
+^running$

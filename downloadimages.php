@@ -20,6 +20,7 @@ include('config.cfg.php');
 $db['link'] = mysqli_connect($cfg_db['host'], $cfg_db['user'], $cfg_db['pass'], $cfg_db['db']);
 mysqli_set_charset($db['link'], "latin1");
 set_time_limit(0);
+ini_set('memory_limit', '512M');
 $start_time = time();
 $targetimagewidth = 1920;
 

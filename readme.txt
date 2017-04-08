@@ -20,14 +20,17 @@ lokale server.
 ========================================================================
 
 1. Systeemvereisten en benodigdheden
-3. Installatie
+2. Installatie
+    2.1 Verwerkingstijden
+3. Cronjob
 4. Dataformaat
     4.1 KP.TXT
     4.2 WW.TXT
     4.3 kpxy.csv
     4.4 wwxy.csv
-6. Licentie
-7. Verkrijgen van de broncode
+5. Licentie
+    5.1 MarkerWithLabel for V3
+6. Verkrijgen van de broncode
 
 
 ========================================================================
@@ -36,8 +39,7 @@ lokale server.
 
 Voor de grafische interface is een recente webbrowser met 
 ondersteuning voor HTML5 nodig. Primaire ontwikkeling vindt plaats 
-voor Mozilla Firefox en releases worden getest in Chromium en Firefox 
-Mobile.
+voor Mozilla Firefox.
 
 Voor de backend is een webserver met PHP (5.3+) en MySQL (5+) of 
 MariaDB (5+) nodig. Optioneel kan Cron of een vergelijkbare toepassing 
@@ -53,7 +55,7 @@ MariaDB: https://mariadb.org
 
 
 ========================================================================
-3. Installatie
+2. Installatie
 ========================================================================
 
 De installatie maakt de databasetabellen en mappenstructuur aan. 
@@ -71,7 +73,7 @@ Om situatietekeningen van kruispunten en specificaties van wegwijzers
 te kunnen bekijken moeten de bestandsnamen van deze afbeeldingen op de 
 open data server geindexeerd worden. Deze zijn namelijk niet van alle 
 kruispunten en wegwijzers beschikbaar. Voer hiervoor 
-getimagefilenames.php uit. Het indexeren duurt tussen 20 en 35 minuten.
+getimagefilenames.php uit.
 
 Tot slot kunnen de situatietekeningen van kruispunten en specificaties 
 van wegwijzers naar de lokale server worden gedownload. Dit is een 
@@ -79,11 +81,32 @@ optionele stap. Wegwijzerkaart werkt ook zonder deze lokale kopie van
 alle afbeeldingen, maar biedt dan vanzelfsprekend geen garantie op 
 continuiteit. Voer downloadimages.php uit om alle afbeeldingen te 
 downloaden. Om schrijfruimte te besparen worden de afbeeldingen 
-verkleind en geconverteerd naar 8bpp PNG opgeslagen. Bij de initiele 
-populatie is dit een langdurig proces dat enkele dagen in beslag kan 
-nemen. Hierbij wordt ongeveer 35 GB aan data gedownload en benodigd 
-ongeveer 15 GB vrije schijfruimte. Bij opvolgende updates worden enkel
-gewijzigde en nieuwe bestanden gedownload.
+verkleind en geconverteerd naar 8bpp PNG opgeslagen. Hierbij wordt 
+ongeveer 35 GB aan data gedownload en benodigd ongeveer 5 GB vrije 
+schijfruimte (exclusief voetgangersbewegwijzering).
+
+2.1 Verwerkingstijden
+------------------------------------------------------------------------
+Het verwerken van de open data neemt aanzienlijke tijd in beslag. 
+Hieronder zijn de tijden getoond van de initiele verwerking op de 
+productieserver van wegwijzerkaart.
+
+update.php              1 min
+getimagefilenames.php   30 min  
+downloadimages.php      32 uur
+
+Bij opvolgende updates duurt de verwerking van downloadimages.php 
+aanzienlijk korter, omdat enkel gewijzigde en nieuwe bestanden worden
+gedownload.
+
+
+========================================================================
+3. Cronjob
+========================================================================
+
+Het proces van het bijwerken van wegwijzerkaart kan geautomatiseerd 
+worden door middel van een cronjob. Hiervoor is het script cronjob.php 
+beschikbaar dat de drie individuele scripts combineert. 
 
 
 ========================================================================
@@ -140,7 +163,7 @@ Noot: wegwijzerkaart converteert de RD coordinaten naar WGS 84.
 
 
 ========================================================================
-6. Licentie
+5. Licentie
 ========================================================================
 
 De broncode van wegwijzerkaart is vrijgegeven als open source software 
@@ -169,9 +192,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Wegwijzerkaart. If not, see <http://www.gnu.org/licenses/>.
 
+5.1 MarkerWithLabel for V3
+------------------------------------------------------------------------
+Wegwijzerkaart maakt gebruik van de bibliotheek "MarkerWithLabel for V3"
+door Gary Little. Op deze bibliotheek zijn de Apache 2.0 licentie-
+voorwaarden van toepassing. De bibliotheek is ondergebracht in de submap
+markerwithlabel/ en de licentievoorwaarden van "MarkerWithLabel for V3"
+zijn opgenomen in markerwithlabel/license.txt. De volledige broncode van
+MarkerWithLabel for V3 kan worden gevonden op:
+https://github.com/printercu/google-maps-utility-library-v3-read-only/tree/master/markerwithlabel
+
 
 ========================================================================
-7. Verkrijgen van de broncode
+6. Verkrijgen van de broncode
 ========================================================================
 
 De broncode van wegwijzerkaart is gepubliceerd op Bitbucket.

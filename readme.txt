@@ -106,7 +106,11 @@ gedownload.
 
 Het proces van het bijwerken van wegwijzerkaart kan geautomatiseerd 
 worden door middel van een cronjob. Hiervoor is het script cronjob.php 
-beschikbaar dat de drie individuele scripts combineert. 
+beschikbaar dat de drie individuele scripts combineert.
+
+Voorbeeld crontab:
+# wegwijzerkaart update iedere donderdag om 4:00 uur
+0 4 * * 4 php -f /var/www/html/wegwijzerkaart/cronjob.php > /var/www/html/wegwijzerkaart/cronresult.txt
 
 
 ========================================================================

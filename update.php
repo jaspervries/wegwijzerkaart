@@ -113,7 +113,7 @@ foreach ($resource_ww as $line) {
 		ON DUPLICATE KEY UPDATE
 		`actueel` = 1";
 		mysqli_query($db['link'], $qry);
-		echo $fields[0] . "\t" . $fields[1] . "\t" . $xy[$fields[0].$fields[1]]['lat'] . "\t" . $xy[$fields[0].$fields[1]]['lng'] . PHP_EOL;
+		echo $fields[0] . "\t" . $fields[1] . ((array_key_exists($fields[0].$fields[1], $xy)) ? "\t" .$xy[$fields[0].$fields[1]]['lat'] . "\t" . $xy[$fields[0].$fields[1]]['lng'] : '') . PHP_EOL;
 	}
 }
 

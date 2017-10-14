@@ -37,6 +37,11 @@ $cfg_resource[\'wwxy\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geod
 $cfg_resource[\'image_base\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/\'; //with trailing slash
 $cfg_resource[\'uselocalimages\'] = TRUE; //toon lokale kruispuntplaatjes en specificatiestaten (TRUE) of verwijs altijd naar afbeeldingen op opendataportaal (FALSE)
 
+//name of running file
+$cfg_running_file = \'running\';
+$cfg_use_time_limit = FALSE; //getimagefilenames herstarten na een bepaalde tijd om tijdlimiet op shared hosting te omzeilen; vanuit cronjob wordt hiermee ook downloadimages uitgeschakeld
+$cfg_time_limit = 60; //toe te passen tijdliemiet
+
 //Google
 $cfg_google[\'maps_key\'] = \'\'; //Google Maps API key
 /* unused

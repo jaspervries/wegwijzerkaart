@@ -16,20 +16,20 @@ You should have received a copy of the GNU General Public License
 along with Wegwijzerkaart. If not, see <http://www.gnu.org/licenses/>.
 */
 
-$running_file = 'running';
+include('config.cfg.php');
 
 //change working directory to script path
 chdir(dirname(__FILE__));
 
 //check if job is running, abort
-if (is_file($running_file)) {
+if (is_file($cfg_running_file)) {
 	exit;
 }
 else {
-	file_put_contents($running_file, '');
+	file_put_contents($cfg_running_file, '');
 	include('update.php');	
 	include('getimagefilenames.php');	
 	include('downloadimages.php');	
-	unlink($running_file);
+	unlink($cfg_running_file);
 }
 ?>

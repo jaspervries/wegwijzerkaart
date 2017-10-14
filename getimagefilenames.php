@@ -21,7 +21,20 @@ $db['link'] = mysqli_connect($cfg_db['host'], $cfg_db['user'], $cfg_db['pass'], 
 mysqli_set_charset($db['link'], "latin1");
 set_time_limit(0);
 $start_time = time();
-$totalfilesize = 0;
+$use_time_limit = $cfg_use_time_limit; //whether to restart the script after a certain amount of time has passed, amount of time to be configured below
+$time_limit = $cfg_time_limit; //seconds, script will restart after this amount of time has passed, may be slightly longer
+
+//for script restarts, get start position and filesize from CLI
+//first argument: position to start
+//second argument: filesize
+if (is_numeric($argv[1])) $startat = $argv[1];
+else $startat = 0;
+if (is_numeric($argv[1])) $totalfilesize = $argv[2];
+else $totalfilesize = 0;
+if ($use_time_limit == TRUE) {
+	echo 'script restarting' . PHP_EOL;
+	set_time_limit($time_limit + 30);
+}
 
 //function to convert filesizes in K, M or G to bytes
 function KMGtoBytes($val) {
@@ -62,12 +75,16 @@ $html = file_get_contents($cfg_resource['image_base']);
 //verkrijg alle mappen op pagina
 preg_match_all('#<tr>.*\[DIR].*href="([0-9]{5}/)"#U', $html, $main_dir_folders);
 foreach($main_dir_folders[1] as $folder) {
+	//controleer of deze moet worden overgeslagen
+	if (substr($folder, 0, -1) < (floor($startat/1000)*1000)) continue;
 	//haal mappagina op
 	//$html = curl_get_contents($cfg_resource['image_base'].$folder);
 	$html = file_get_contents($cfg_resource['image_base'].$folder);
 	//verkrijg alle kruispunten in map
 	preg_match_all('#<tr>.*\[DIR].*href="([0-9]{5}/)"#U', $html, $kruispunten);
 	foreach($kruispunten[1] as $kruispunt) {
+		//controleer of deze moet worden overgeslagen
+		if (substr($kruispunt, 0, -1) < $startat) continue;
 		//haal kruispuntpagina op
 		//$html = curl_get_contents($cfg_resource['image_base'].$folder.$kruispunt);
 		$html = file_get_contents($cfg_resource['image_base'].$folder.$kruispunt);
@@ -112,8 +129,35 @@ foreach($main_dir_folders[1] as $folder) {
 				mysqli_query($db['link'], $qry);
 			}
 		}
+		//check if script needs to be restart
+		if (($use_time_limit == TRUE) && ((time() - $start_time) > $time_limit)) {
+			//change to script dir
+			chdir(__DIR__);
+			//restart script as new process
+			$exec = 'php ' . basename(__FILE__) . ' ' . ($kp_nr + 1) . ' ' . $totalfilesize;
+			echo $exec . PHP_EOL;
+			//windows
+			if (substr(php_uname(), 0, 7) == "Windows") {
+				//requires COM extension enabled in php.ini extension=php_com_dotnet.dll
+				//doesn't appear to support passing stdout to file
+				$WshShell = new COM("WScript.Shell");
+				$oExec = $WshShell->Run($exec, 0, false);
+			}
+			//other 
+			else {
+				if ($startat == 0) unlink('result.txt'); //reset result file on new run
+				exec($exec . ' >> result.txt &');
+			}
+			//end current script
+			exit;
+		}
 	}
 }
 echo 'Verwerkingstijd: '.floor((time()-$start_time)/60).':'.str_pad(((time()-$start_time)%60), 2, '0', STR_PAD_LEFT) . PHP_EOL;
 echo 'Totale bestandsgrootte afbeeldingen: ' . $totalfilesize . ' bytes (' . round($totalfilesize/pow(1000,3),3) . 'G)';
+
+//unlink running file, because cronjob.php will not do this any more
+if ($use_time_limit == TRUE) {
+	unlink($cfg_running_file);
+}
 ?>

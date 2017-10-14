@@ -1,7 +1,7 @@
 <?php
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016 Jasper Vries
+Copyright (C) 2016-2017 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -47,17 +47,29 @@ function KMGtoBytes($val) {
 	}
 }
 
+function curl_get_contents($url) {
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_HEADER, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	$contents = curl_exec($ch);
+	curl_close($ch);
+	return $contents;
+}
+
 //haal hoofdpagina op
+//$html = curl_get_contents($cfg_resource['image_base']);
 $html = file_get_contents($cfg_resource['image_base']);
 //verkrijg alle mappen op pagina
 preg_match_all('#<tr>.*\[DIR].*href="([0-9]{5}/)"#U', $html, $main_dir_folders);
 foreach($main_dir_folders[1] as $folder) {
 	//haal mappagina op
+	//$html = curl_get_contents($cfg_resource['image_base'].$folder);
 	$html = file_get_contents($cfg_resource['image_base'].$folder);
 	//verkrijg alle kruispunten in map
 	preg_match_all('#<tr>.*\[DIR].*href="([0-9]{5}/)"#U', $html, $kruispunten);
 	foreach($kruispunten[1] as $kruispunt) {
 		//haal kruispuntpagina op
+		//$html = curl_get_contents($cfg_resource['image_base'].$folder.$kruispunt);
 		$html = file_get_contents($cfg_resource['image_base'].$folder.$kruispunt);
 		//kruispuntschets
 		if (preg_match('#<tr>.*\[IMG].*href="((\d{5})K\.png)".*(\d{2}-[a-z]+-\d{4} \d{2}:\d{2}).*(\d+\.?\d*[KMG])#Ui', $html, $res) > 0) {

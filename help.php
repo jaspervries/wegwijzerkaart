@@ -25,7 +25,7 @@ $qry = "SELECT (SELECT count(*) FROM `kp` WHERE `actueel` = 1), (SELECT count(*)
 $res = mysqli_query($db['link'], $qry);
 $kp = mysqli_fetch_row($res);
 //wegwijzers
-$qry = "SELECT (SELECT count(*) FROM `ww` WHERE `actueel` = 1), (SELECT count(*) FROM `ww` WHERE `actueel` = 1 AND `lat` != 0), (SELECT count(*) FROM `ww` WHERE `actueel` = 1 AND `afbeelding` IS NOT NULL)";
+$qry = "SELECT (SELECT count(*) FROM `ww` WHERE `actueel` = 1), (SELECT count(*) FROM `ww` WHERE `actueel` = 1 AND `lat` != 0), (SELECT count(*) FROM `ww` WHERE `actueel` = 1 AND `afbeelding` IS NOT NULL), (SELECT MAX(`stand`) FROM `ww`)";
 $res = mysqli_query($db['link'], $qry);
 $ww = mysqli_fetch_row($res);
 ?>
@@ -36,6 +36,7 @@ $ww = mysqli_fetch_row($res);
 <tr><th>Aantal wegwijzers in database</th><td><?php echo number_format($ww[0], 0, ',', '.'); ?></td></tr>
 <tr><th>Wegwijzers met co&ouml;rdinaten</th><td><?php echo number_format($ww[1], 0, ',', '.'); ?> (<?php echo number_format($ww[1]/$ww[0]*100, 0, ',', '.'); ?>%)</td></tr>
 <tr><th>Wegwijzers met specificatietekening</th><td><?php echo number_format($ww[2], 0, ',', '.'); ?> (<?php echo number_format($ww[2]/$ww[0]*100, 0, ',', '.'); ?>%)</td></tr>
+<tr><th>Laatst bijgewerkt</th><td><?php echo htmlspecialchars($ww[3]); ?></td></tr>
 </table>
 <p>Voor meer informatie over de open dataset wordt verwezen naar de <a href="https://www.bewegwijzeringsdienst.nl/home/producten-en-diensten/open-data/">Nationale Bewegwijzeringsdienst</a>.</p>
 

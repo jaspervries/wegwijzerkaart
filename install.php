@@ -1,7 +1,7 @@
 <?php
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016-2017 Jasper Vries
+Copyright (C) 2016-2017, 2019 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -34,13 +34,12 @@ $cfg_resource[\'KP\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodat
 $cfg_resource[\'WW\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/WW.TXT\';
 $cfg_resource[\'kpxy\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/kpxy.csv\';
 $cfg_resource[\'wwxy\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/wwxy.csv\';
-$cfg_resource[\'image_base\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/\'; //with trailing slash
-$cfg_resource[\'uselocalimages\'] = TRUE; //toon lokale kruispuntplaatjes en specificatiestaten (TRUE) of verwijs altijd naar afbeeldingen op opendataportaal (FALSE)
+$cfg_resource[\'image_base\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/\'; //met afsluitende slash
+$cfg_resource[\'uselocalimages\'] = FALSE; //gebruik lokale kruispuntplaatjes en specificatiestaten (TRUE) of verwijs altijd naar afbeeldingen op opendataportaal (FALSE)
 
-//name of running file
-$cfg_running_file = \'running\';
-$cfg_use_time_limit = FALSE; //getimagefilenames herstarten na een bepaalde tijd om tijdlimiet op shared hosting te omzeilen; vanuit cronjob wordt hiermee ook downloadimages uitgeschakeld
-$cfg_time_limit = 60; //toe te passen tijdliemiet
+//Tijdlimieten
+$cfg_runtime_limit = 160; //maximale tijd die het script actief mag zijn
+$cfg_timeout_limit = 3000; //tijd die verstreken moet zijn om het script te mogen herstarten wanneer dit niet correct afgesloten is
 
 //Google
 $cfg_google[\'maps_key\'] = \'\'; //Google Maps API key
@@ -76,7 +75,9 @@ else {
 		`gemeente` VARCHAR(64) NOT NULL,
 		`lat` DOUBLE NOT NULL DEFAULT 0,
 		`lng` DOUBLE NOT NULL DEFAULT 0,
-		`afbeelding` TINYTEXT NULL,
+		`afbeelding` TINYTEXT CHARACTER SET 'latin1' COLLATE 'latin1_general_cs' NULL,
+		`afbeelding_datum` DATETIME NULL,
+		`md5` VARCHAR(32) NULL,
 		`actueel` BOOLEAN NOT NULL DEFAULT 1,
 		`stand` DATETIME NOT NULL,
 		UNIQUE KEY (`kp_nr`,`naam`,`provincie`,`gemeente`)
@@ -86,24 +87,6 @@ else {
 	COLLATE 'latin1_general_ci'";
 	if (mysqli_query($db['link'], $qry)) echo 'table `kp` created or exists'.PHP_EOL;
 	else echo 'did not create table `kp`'.PHP_EOL;
-	echo mysqli_error($db['link']).PHP_EOL;
-	
-	$qry = "ALTER TABLE `kp`
-	ADD
-	`afbeelding_datum` DATETIME NULL
-	AFTER
-	`afbeelding`";
-	if (mysqli_query($db['link'], $qry)) echo 'table `kp` modified'.PHP_EOL;
-	else echo 'did not modify table `kp`'.PHP_EOL;
-	echo mysqli_error($db['link']).PHP_EOL;
-	
-	$qry = "ALTER TABLE `kp`
-	ADD
-	`md5` VARCHAR(32) NULL
-	AFTER
-	`afbeelding_datum`";
-	if (mysqli_query($db['link'], $qry)) echo 'table `kp` modified'.PHP_EOL;
-	else echo 'did not modify table `kp`'.PHP_EOL;
 	echo mysqli_error($db['link']).PHP_EOL;
 	
 	$qry = "CREATE TABLE IF NOT EXISTS `ww`
@@ -118,7 +101,9 @@ else {
 		`type_constructie` VARCHAR(1) NOT NULL,
 		`lat` DOUBLE NOT NULL DEFAULT 0,
 		`lng` DOUBLE NOT NULL DEFAULT 0,
-		`afbeelding` TINYTEXT NULL,
+		`afbeelding` TINYTEXT CHARACTER SET 'latin1' COLLATE 'latin1_general_cs' NULL,
+		`afbeelding_datum` DATETIME NULL,
+		`md5` VARCHAR(32) NULL,
 		`actueel` BOOLEAN NOT NULL DEFAULT 1,
 		`stand` DATETIME NOT NULL,
 		UNIQUE KEY (`kp_nr`,`ww_nr`,`provincie`,`gemeente`,`uitvoering`,`type_wegwijzer`,`type_constructie`,`lat`,`lng`)
@@ -129,27 +114,25 @@ else {
 	if (mysqli_query($db['link'], $qry)) echo 'table `ww` created or exists'.PHP_EOL;
 	else echo 'did not create table `ww`'.PHP_EOL;
 	echo mysqli_error($db['link']).PHP_EOL;
-	
-	$qry = "ALTER TABLE `ww`
-	ADD
-	`afbeelding_datum` DATETIME NULL
-	AFTER
-	`afbeelding`";
-	if (mysqli_query($db['link'], $qry)) echo 'table `ww` modified'.PHP_EOL;
-	else echo 'did not modify table `ww`'.PHP_EOL;
-	echo mysqli_error($db['link']).PHP_EOL;
-	
-	$qry = "ALTER TABLE `ww`
-	ADD
-	`md5` VARCHAR(32) NULL
-	AFTER
-	`afbeelding_datum`";
-	if (mysqli_query($db['link'], $qry)) echo 'table `ww` modified'.PHP_EOL;
-	else echo 'did not modify table `ww`'.PHP_EOL;
+
+	$qry = "CREATE TABLE IF NOT EXISTS `updatelog`
+	(
+		`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		`lastupdate` INT UNSIGNED NOT NULL,
+		`starttime` INT UNSIGNED NOT NULL,
+		`task` INT(2) UNSIGNED NOT NULL DEFAULT 0,
+		`item` VARCHAR(64) NULL,
+		`finished` BOOLEAN NOT NULL DEFAULT 0
+	)
+	ENGINE `MyISAM`,
+	CHARACTER SET 'latin1', 
+	COLLATE 'latin1_general_ci'";
+	if (mysqli_query($db['link'], $qry)) echo 'table `updatelog` created or exists'.PHP_EOL;
+	else echo 'did not create table `updatelog`'.PHP_EOL;
 	echo mysqli_error($db['link']).PHP_EOL;
 	
 	//create store
-	if (!is_dir('store')) {
+	if (($cfg_resource['uselocalimages'] == TRUE) && !is_dir('store')) {
 		mkdir('store');
 		$subdirs = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
 		foreach ($subdirs as $subdir) {

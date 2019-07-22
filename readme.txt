@@ -107,10 +107,14 @@ gedownload.
 Het proces van het bijwerken van wegwijzerkaart kan geautomatiseerd 
 worden door middel van een cronjob. Hiervoor is het script cronjob.php 
 beschikbaar dat de drie individuele scripts combineert.
+Het script is ontworpen om ieder uur te draaien en steeds een stukje 
+bij te werken. Hierdoor kan het ook gebruikt worden op shared hosting 
+omgevingen met beperkte rekentijd. Om de update in een keer uit te 
+voeren kunnen de tijdlimieten in config.cfg.php worden aangepast.
 
 Voorbeeld crontab:
-# wegwijzerkaart update iedere donderdag om 4:00 uur
-0 4 * * 4 php -f /var/www/html/wegwijzerkaart/cronjob.php > /var/www/html/wegwijzerkaart/cronresult.txt
+# wegwijzerkaart update iedere uur op 47 minuten na het hele uur
+47 * * * * php -f /var/www/html/wegwijzerkaart/cronjob.php > /var/www/html/wegwijzerkaart/cronresult.txt
 
 
 ========================================================================
@@ -182,7 +186,7 @@ volledige licentietekst in license.txt.
 
 
 Wegwijzerkaart - grafische interface voor nationale bewegwijzering open data
-Copyright (C) 2016-2017 Jasper Vries
+Copyright (C) 2016-2017, 2019 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 

@@ -72,6 +72,21 @@ while(TRUE) {
 		elseif (($cfg_resource['uselocalimages'] == FALSE) && ($current_task == 5)) {
 			$current_task = 1;
 		}
+		//controleer of taak 1 mag starten
+		if ($current_task == 1) {
+			//bepaal vorige taak 1
+			$qry = "SELECT `starttime` FROM `updatelog` WHERE `task` = 1 ORDER BY `id` DESC LIMIT 1";
+			$res = mysqli_query($db['link'], $qry);
+			if (mysqli_num_rows($res)) {
+				$res = mysqli_fetch_assoc($res);
+				if (($res['starttime'] + $cfg_runonce_limit) > $time_start) {
+					echo 'no allowed to start task 1' . PHP_EOL;
+					echo $res['starttime'] . PHP_EOL;
+					echo $time_start . PHP_EOL;
+					exit;
+				}
+			}
+		}
 		//maak nieuwe entry voor nieuwe taak
 		$qry = "INSERT INTO `updatelog` SET
 		`lastupdate` = " . time() . ",

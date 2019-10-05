@@ -113,8 +113,11 @@ while(TRUE) {
 		//sluit taak af
 		if ($current_task_done == TRUE) {
 			$qry = "UPDATE `updatelog` SET
-			`lastupdate` = " . time() . ",
-			`finished` = 1
+			`lastupdate` = " . time() . ", ";
+			if (!empty($current_item)) {
+				$qry .= "`item` = '" . $current_item . "', ";
+			}
+			$qry .= "`finished` = 1
 			WHERE `id` = " . $updatestate['id'];
 		}
 		else {

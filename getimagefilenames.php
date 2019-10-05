@@ -62,6 +62,7 @@ $startat = 0;
 if (isset($current_item) && ($current_item > 0)) {
 	$startat = $current_item;
 }
+$loop_terminated_immaturely = FALSE;
 //haal hoofdpagina op
 //$html = curl_get_contents($cfg_resource['image_base']);
 $html = file_get_contents($cfg_resource['image_base']);
@@ -126,9 +127,14 @@ foreach($main_dir_folders[1] as $folder) {
 		//bekijk of lus moet worden beeindigd
 		if (isset($time_left) && (($time_left - (time() - $start_time)) < 5)) {
 			//minder dan 5 seconden over, beeindig lus
+			$loop_terminated_immaturely = TRUE;
 			break 2;
 		}
 	}
+}
+
+if ($loop_terminated_immaturely == FALSE) {
+	$current_task_done = TRUE;
 }
 
 echo 'Verwerkingstijd: '.floor((time()-$start_time)/60).':'.str_pad(((time()-$start_time)%60), 2, '0', STR_PAD_LEFT) . PHP_EOL;

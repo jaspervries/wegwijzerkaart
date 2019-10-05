@@ -21,22 +21,28 @@ include('config.cfg.php');
 $db['link'] = mysqli_connect($cfg_db['host'], $cfg_db['user'], $cfg_db['pass'], $cfg_db['db']);
 mysqli_set_charset($db['link'], "latin1");
 //kruispunten
-$qry = "SELECT (SELECT count(*) FROM `kp` WHERE `actueel` = 1), (SELECT count(*) FROM `kp` WHERE `actueel` = 1 AND `lat` != 0), (SELECT count(*) FROM `kp` WHERE `actueel` = 1 AND `afbeelding` IS NOT NULL)";
+$qry = "SELECT (SELECT count(*) FROM `kp` WHERE `actueel` = 1), (SELECT count(*) FROM `kp` WHERE `actueel` = 1 AND `lat` != 0), (SELECT count(*) FROM `kp` WHERE `actueel` = 1 AND `afbeelding` IS NOT NULL), (SELECT MAX(`stand`) FROM `kp`)";
 $res = mysqli_query($db['link'], $qry);
 $kp = mysqli_fetch_row($res);
 //wegwijzers
 $qry = "SELECT (SELECT count(*) FROM `ww` WHERE `actueel` = 1), (SELECT count(*) FROM `ww` WHERE `actueel` = 1 AND `lat` != 0), (SELECT count(*) FROM `ww` WHERE `actueel` = 1 AND `afbeelding` IS NOT NULL), (SELECT MAX(`stand`) FROM `ww`)";
 $res = mysqli_query($db['link'], $qry);
 $ww = mysqli_fetch_row($res);
+//laatste update
+$qry = "SELECT `lastupdate` FROM `updatelog` WHERE `task` = 4 AND `finished` = 1 ORDER BY `id` DESC LIMIT 1";
+$res = mysqli_query($db['link'], $qry);
+$ud = mysqli_fetch_row($res);
 ?>
 <table>
 <tr><th>Aantal kruispunten in database</th><td><?php echo number_format($kp[0], 0, ',', '.'); ?></td></tr>
 <tr><th>Kruispunten met co&ouml;rdinaten</th><td><?php echo number_format($kp[1], 0, ',', '.'); ?> (<?php echo number_format($kp[1]/$kp[0]*100, 0, ',', '.'); ?>%)</td></tr>
 <tr><th>Kruispunten met kruispuntschets</th><td><?php echo number_format($kp[2], 0, ',', '.'); ?> (<?php echo number_format($kp[2]/$kp[0]*100, 0, ',', '.'); ?>%)</td></tr>
+<tr><th>Meest recente kruispuntschets</th><td><?php echo htmlspecialchars($kp[3]); ?></td></tr>
 <tr><th>Aantal wegwijzers in database</th><td><?php echo number_format($ww[0], 0, ',', '.'); ?></td></tr>
 <tr><th>Wegwijzers met co&ouml;rdinaten</th><td><?php echo number_format($ww[1], 0, ',', '.'); ?> (<?php echo number_format($ww[1]/$ww[0]*100, 0, ',', '.'); ?>%)</td></tr>
 <tr><th>Wegwijzers met specificatietekening</th><td><?php echo number_format($ww[2], 0, ',', '.'); ?> (<?php echo number_format($ww[2]/$ww[0]*100, 0, ',', '.'); ?>%)</td></tr>
-<tr><th>Laatst bijgewerkt</th><td><?php echo htmlspecialchars($ww[3]); ?></td></tr>
+<tr><th>Meest recente specificatietekening</th><td><?php echo htmlspecialchars($ww[3]); ?></td></tr>
+<tr><th>Laatste update wegwijzerkaart</th><td><?php echo date('Y-m-d H:i:s', $ud[0]); ?></td></tr>
 </table>
 <p>Voor meer informatie over de open dataset wordt verwezen naar de <a href="https://www.bewegwijzeringsdienst.nl/home/producten-en-diensten/open-data/">Nationale Bewegwijzeringsdienst</a>.</p>
 

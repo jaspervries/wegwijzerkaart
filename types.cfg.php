@@ -1,7 +1,7 @@
 <?php
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016 Jasper Vries
+Copyright (C) 2016, 2025 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -16,51 +16,64 @@ You should have received a copy of the GNU General Public License
 along with Wegwijzerkaart. If not, see <http://www.gnu.org/licenses/>.
 */
 
-$ww_types['uitvoering']['T'] = 'Transparant, inwendig verlicht';
-$ww_types['uitvoering']['N'] = 'Niet reflecterend';
-$ww_types['uitvoering']['V'] = 'Volreflecterend';
-$ww_types['uitvoering']['A'] = 'Aangestraald, half reflecterend';
+//bron: https://bewegwijzeringsdienst.nl/wp-content/uploads/2024/04/nomenclatuur-nbd.pdf
+$ww_types['uitvoering']['A'] = 'aangestraald, opschriften retroreflecterend, ondergroend niet-retroreflecterend';
+$ww_types['uitvoering']['K'] = 'wisselbaar, handbediend';
+$ww_types['uitvoering']['L'] = 'aangestraald, opschriften en ondergrond retroreflecterend';
+$ww_types['uitvoering']['N'] = 'onverlicht, opschriften en ondergrond niet-retroreflecterend';
+$ww_types['uitvoering']['O'] = 'onverlicht, opschriften retroreflecterend, ondergrond niet-retroreflecterend';
+$ww_types['uitvoering']['P'] = 'portaalconstructie';
+$ww_types['uitvoering']['T'] = 'transparant, inwendig verlicht';
+$ww_types['uitvoering']['U'] = 'uithouder';
+$ww_types['uitvoering']['V'] = 'onverlicht, opschriften en ondergrond retroreflecterend';
+$ww_types['uitvoering']['W'] = 'wisselbaar, elektrisch';
 
-$ww_types['type_wegwijzer']['L'] = 'Lichtwegwijzer';
-$ww_types['type_wegwijzer']['F'] = 'Fietshandwijzer, fietsbord';
-$ww_types['type_wegwijzer']['V'] = 'Voorwegwijzer';
-$ww_types['type_wegwijzer']['B'] = 'Besliswegwijzer';
-$ww_types['type_wegwijzer']['K'] = 'Riviernaambord';
-$ww_types['type_wegwijzer']['R'] = 'Rijstrookbord';
-$ww_types['type_wegwijzer']['D'] = 'Voorsorteerbord';
-$ww_types['type_wegwijzer']['U'] = 'Uit-bord';
-$ww_types['type_wegwijzer']['E'] = 'Groot model handwijzer';
-$ww_types['type_wegwijzer']['A'] = 'Aftakkingsbord';
-$ww_types['type_wegwijzer']['J'] = 'Rvv-borden';
-$ww_types['type_wegwijzer']['O'] = 'Knooppuntnaambord';
-$ww_types['type_wegwijzer']['C'] = 'Chevronbord';
-$ww_types['type_wegwijzer']['H'] = 'Klein model handwijzer';
-$ww_types['type_wegwijzer']['Q'] = 'Voetgangershandwijzer';
-$ww_types['type_wegwijzer']['S'] = 'Stapelbord';
-$ww_types['type_wegwijzer']['N'] = 'Routenummerbord';
-$ww_types['type_wegwijzer']['M'] = 'Via-, richting- of routebord';
-$ww_types['type_wegwijzer']['P'] = 'Verzorgingsplaatsbord';
-$ww_types['type_wegwijzer']['T'] = 'Paddestoel';
-$ww_types['type_wegwijzer']['I'] = 'Informatiepaneel';
-$ww_types['type_wegwijzer']['Z'] = 'Diversen';
-$ww_types['type_wegwijzer']['G'] = 'Provinciegrensbord';
+$ww_types['type_wegwijzer']['A'] = 'aftakkingsbord';
+$ww_types['type_wegwijzer']['B'] = 'laag richtingbord';
+$ww_types['type_wegwijzer']['C'] = 'chevronbord';
+$ww_types['type_wegwijzer']['D'] = 'voorsorteerbord';
+$ww_types['type_wegwijzer']['E'] = 'groot model handwijzer';
+$ww_types['type_wegwijzer']['F'] = 'fietshandwijzer, fietsbord';
+$ww_types['type_wegwijzer']['G'] = 'land- of provinciegrensbord';
+$ww_types['type_wegwijzer']['H'] = 'klein model handwijzer';
+$ww_types['type_wegwijzer']['I'] = 'informatiepaneel';
+$ww_types['type_wegwijzer']['J'] = 'RVV-borden (restaurant, P+R)';
+$ww_types['type_wegwijzer']['K'] = 'riviernaambord';
+$ww_types['type_wegwijzer']['L'] = 'lichtwegwijzer';
+$ww_types['type_wegwijzer']['M'] = 'richting- of routebord, doelen- of servicebord (NBA)';
+$ww_types['type_wegwijzer']['N'] = 'routenummerbord, uitwijkroutebord';
+$ww_types['type_wegwijzer']['O'] = 'knooppuntnaambord, aankondigingsbord knooppunt/afrit (NBA)';
+$ww_types['type_wegwijzer']['P'] = 'verzorgingsplaatsbord';
+$ww_types['type_wegwijzer']['Q'] = 'voetgangershandwijzer';
+$ww_types['type_wegwijzer']['R'] = 'rijstrookbord';
+$ww_types['type_wegwijzer']['S'] = 'stapelbord';
+$ww_types['type_wegwijzer']['T'] = 'toeristisch routebord';
+$ww_types['type_wegwijzer']['U'] = 'uit-bord';
+$ww_types['type_wegwijzer']['V'] = 'voorwegwijzer';
+$ww_types['type_wegwijzer']['W'] = 'wijk- of objectbord';
+$ww_types['type_wegwijzer']['X'] = 'straatnaambord';
+$ww_types['type_wegwijzer']['Y'] = 'straatnaam/objectbord (combinatie)';
+$ww_types['type_wegwijzer']['Z'] = 'diversen';
 
-$ww_types['type_constructie']['M'] = 'Geschilderde stalen mast';
-$ww_types['type_constructie']['C'] = 'Gecombin. met mast openb. verl.';
-$ww_types['type_constructie']['P'] = 'Portaal';
-$ww_types['type_constructie']['F'] = 'Flespaal, kleine verzinkte mast';
-$ww_types['type_constructie']['G'] = 'Paddestoel';
-$ww_types['type_constructie']['E'] = 'Gecombin. met uitleggermast van verkeerslichten en openbare verlichting';
-$ww_types['type_constructie']['A'] = 'Gecombin. met mast met verkeerslicht';
-$ww_types['type_constructie']['S'] = 'Staalconstructie';
-$ww_types['type_constructie']['H'] = 'Houten palen';
-$ww_types['type_constructie']['U'] = 'Uithouder';
-$ww_types['type_constructie']['Z'] = 'Bestaande ondersteuningsconstructie';
-$ww_types['type_constructie']['T'] = 'Staalconstructie';
-$ww_types['type_constructie']['D'] = 'Gecombin. met mast openb. verl. met verkeerslicht';
-$ww_types['type_constructie']['B'] = 'Gecombin. met uitleggermast van verkeerslichten';
-$ww_types['type_constructie']['K'] = 'Kolom portaal of uithouder';
-$ww_types['type_constructie']['V'] = 'Viaduct';
+$ww_types['type_constructie']['A'] = 'gecombineerd met mast met verkeerslicht';
+$ww_types['type_constructie']['B'] = 'gecombineerd met uitleggermast van verkeerslichten';
+$ww_types['type_constructie']['C'] = 'gecombineerd met mast openbare verlichting';
+$ww_types['type_constructie']['D'] = 'gecombineerd met mast openbare verlichting met verkeerslicht';
+$ww_types['type_constructie']['E'] = 'gecombineerd met uitleggermast van verkeerslichten en openbare verlichting';
+$ww_types['type_constructie']['F'] = 'flespaal, kleine verzinkte mast';
+$ww_types['type_constructie']['G'] = 'paddenstoelvoet';
+$ww_types['type_constructie']['H'] = 'houten palen';
+$ww_types['type_constructie']['I'] = 'infozuil';
+$ww_types['type_constructie']['J'] = 'aluminiumconstructie';
+$ww_types['type_constructie']['K'] = 'kolom portaal of uithouder';
+$ww_types['type_constructie']['M'] = 'geschilderde stalen mast';
+$ww_types['type_constructie']['O'] = 'onbekend (nog nader te bepalen)';
+$ww_types['type_constructie']['P'] = 'portaal';
+$ww_types['type_constructie']['S'] = 'staalconstructie';
+$ww_types['type_constructie']['T'] = 'frame (toeristisch)';
+$ww_types['type_constructie']['U'] = 'uithouder/zweepmast';
+$ww_types['type_constructie']['V'] = 'viaduct';
+$ww_types['type_constructie']['Z'] = 'bestaande ondersteuningsconstructie';
 
 $ww_types['provincie']['DR'] = 'Drenthe';
 $ww_types['provincie']['FL'] = 'Flevoland';

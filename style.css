@@ -1,6 +1,6 @@
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016 Jasper Vries
+Copyright (C) 2016, 2025 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -207,11 +207,22 @@ span.ww-type-voet {
 	text-align: left;
 	white-space: nowrap;
 	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+	background:  none;
+	border: none;
+	border-radius: 0;
+	opacity: 1 !important;
+	box-shadow: none;
+	margin-left: 0;
+	padding: 5px;
 	text-shadow:
     -1px -1px 0 #fff,
     1px -1px 0 #fff,
     -1px 1px 0 #fff,
     1px 1px 0 #fff;  
+}
+.markerlabel::before {
+	border: none;
 }
 
 /*jquery ui*/

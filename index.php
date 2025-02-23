@@ -3,19 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <title>Wegwijzerkaart</title>
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=<?php include('config.cfg.php'); echo $cfg_google['maps_key']; ?>"></script>
-<script type="text/javascript" src="markerwithlabel/markerwithlabel_packed.js"></script>
-<script type="text/javascript" src="wwk.js"></script>
-<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="bundled/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="bundled/leaflet/leaflet.css">
 <link rel="stylesheet" type="text/css" href="style.css">
 <link rel="icon" type="image/png" href="favicon.png">
+<script src="bundled/jquery/jquery.min.js"></script>
+<script src="bundled/jquery-ui/jquery-ui.min.js"></script>
+<script src="bundled/js-cookie/js.cookie.min.js"></script>
+<script src="bundled/leaflet/leaflet.js"></script>
+<script src="map.js"></script>
+<script src="wwk.js"></script>
 </head>
 <body>
 
 <div style="position: fixed; left: 0; top: 0; width: 100%; height: 100%">
-	<div class="map-canvas" id="map-canvas"></div>
+	<div id="map" style="width: 100%; min-height: 100%"></div>
 </div>
 
 <div id="navigation">

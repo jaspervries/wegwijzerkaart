@@ -1,7 +1,7 @@
 <?php 
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016-2017 Jasper Vries
+Copyright (C) 2016-2017, 2025 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -18,22 +18,15 @@ along with Wegwijzerkaart. If not, see <http://www.gnu.org/licenses/>.
 session_start();
 include('config.cfg.php');
 include('types.cfg.php');
+include('functions/bounds_to_sql.php');
 $db['link'] = mysqli_connect($cfg_db['host'], $cfg_db['user'], $cfg_db['pass'], $cfg_db['db']);
 mysqli_set_charset($db['link'], "latin1");
 //kruispunten
 if ($_GET['type'] == 'kp') {
-	//extract minimum and maximum coordinates
-	$coords = $_GET['bounds'];
-	$coords = substr($coords, 2, -2);
-	$coords = explode('), (', $coords);
-	for ($i = 0; $i < count($coords); $i++) {
-		$coords[$i] = explode(', ', $coords[$i]);
-	}
 	$qry = "SELECT `id`, `kp_nr`, `lat`, `lng` FROM `kp`
 	WHERE `lat` != 0
 	AND `lng` != 0
-	AND `lat` BETWEEN '".$coords[0][0]."' AND '".$coords[1][0]."'
-	AND `lng` BETWEEN '".$coords[0][1]."' AND '".$coords[1][1]."'
+	AND " . bounds_to_sql($_GET['bounds']) . "
 	AND `actueel` = 1";
 	
 	$res = mysqli_query($db['link'], $qry);
@@ -60,8 +53,7 @@ if ($_GET['type'] == 'ww') {
 	$qry = "SELECT `id`, `ww_nr`, `lat`, `lng`, `kp_nr` FROM `ww`
 	WHERE `lat` != 0
 	AND `lng` != 0
-	AND `lat` BETWEEN '".$coords[0][0]."' AND '".$coords[1][0]."'
-	AND `lng` BETWEEN '".$coords[0][1]."' AND '".$coords[1][1]."'
+	AND " . bounds_to_sql($_GET['bounds']) . "
 	AND `actueel` = 1";
 	
 	$res = mysqli_query($db['link'], $qry);

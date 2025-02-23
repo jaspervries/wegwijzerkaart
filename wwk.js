@@ -65,6 +65,16 @@ function set_zoom_warning() {
 	}
 }
 
+//centreren van kaart obv zoekfunctie
+function set_map_center(strlatlng) {
+	if (typeof(strlatlng) !== 'undefined') {
+		centerlatlng = strlatlng.match(/^(\d+\.\d+),(\d+\.\d+)$/);
+		if ((centerlatlng != null) && (centerlatlng[1] != 0) && (centerlatlng[2] != 0)) {
+			map.setView(L.latLng(parseFloat(centerlatlng[1]), parseFloat(centerlatlng[2])), 18);
+		}
+	}
+}
+
 function draw_kruispunten() {
 	let layer = 'kp';
 	$('#map-loading').show();

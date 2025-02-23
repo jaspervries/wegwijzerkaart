@@ -200,7 +200,53 @@ span.ww-type-voet {
 	border-color: #960;
 }
 
-/*map related*/
+/*
+map related
+*/
+div#map-options-container {
+	position:absolute;
+	z-index: 86;
+	right:16px;
+	top:32px;
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	padding: 8px;
+	text-align: left;
+	font-size: 0.9em;
+}
+#map-options-container ul, #map-options-container li {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+#map-options-container fieldset {
+	border: 1px solid #CCC;
+	border-radius: 4px;
+	margin: 8px 0;
+}
+#map-options-container fieldset:first-of-type {
+	margin-top: 0;
+}
+#map-options-container fieldset:last-of-type {
+	margin-bottom: 0;
+}
+#map-options-container li.disabled label {
+	color: #CCC;
+}
+/* map style */
+img.map-style-grayscale {
+	filter: grayscale(1) brightness(1.1);
+}
+img.map-style-lighter {
+	filter: brightness(1.05) contrast(1.1) grayscale(0.1);
+}
+img.map-style-dark {
+	filter: invert(1) grayscale(1);
+}
+img.map-style-oldskool {
+	filter: sepia(0.5) brightness(1.05);
+}
+/* markers */
 .markerlabel {
 	font-size: x-small;
 	color: #000;
@@ -223,6 +269,22 @@ span.ww-type-voet {
 }
 .markerlabel::before {
 	border: none;
+}
+
+/* map messages */
+#map-loading {	
+	z-index: 85;
+	position: absolute;
+	left: 0;
+	bottom: 50%;
+	width: 100%;
+	text-align: center;
+}
+#map-loading span {	
+	background-color: rgba(0, 0, 0, 0.4);
+	padding: 4px;
+	color: #FFF;
+	border-radius: 4px;
 }
 
 /*jquery ui*/

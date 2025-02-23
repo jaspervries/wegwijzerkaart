@@ -4,15 +4,15 @@
 
 Wegwijzerkaart is een grafische interface voor het bekijken van de open 
 dataset "Nationale bewegwijzering" uit het Nationaal Georegister.
-http://nationaalgeoregister.nl/geonetwork/srv/search/?uuid=LBZ3E7J2-0TEG-LF3H-OU23-VXS0CUO0UPY3
+https://www.nationaalgeoregister.nl/geonetwork/srv/api/records/lbz3e7j2-0teg-lf3h-ou23-vxs0cuo0upy3?language=all
+of https://bewegwijzeringsdienst.nl/home/voor-wegbeheerders/databeheer/
 Deze dataset bevat utilitaire bewegwijzering, kruispunten, 
 wegwijzerlocaties, beheerders en situatieschetsen uit heel Nederland.
 
 Wegwijzerkaart kopieert de data uit de dataset naar een lokale database 
-en presenteert de inhoud van deze database op een Google Maps 
-ondergrond. Afbeeldingen van kruispunten en wegwijzers worden direct 
-geladen vanaf de open data server, of kunnen worden gekopieerd naar de
-lokale server.
+en presenteert de inhoud van deze database op een kaart (Leaflet).
+Afbeeldingen van kruispunten en wegwijzers worden direct geladen vanaf 
+de open data server, of kunnen worden gekopieerd naar de lokale server.
 
 
 ========================================================================
@@ -29,7 +29,6 @@ lokale server.
     4.3 kpxy.csv
     4.4 wwxy.csv
 5. Licentie
-    5.1 MarkerWithLabel for V3
 6. Verkrijgen van de broncode
 
 
@@ -47,8 +46,6 @@ worden ingezet om de database automatisch periodiek bij te werken.
 
 URLs:
 Mozilla Firefox: https://www.mozilla.org/firefox
-Chromium: https://www.chromium.org
-Chromium (Windows build): http://chromium.woolyss.com
 PHP: http://php.net
 MySQL: https://www.mysql.com
 MariaDB: https://mariadb.org
@@ -186,7 +183,7 @@ volledige licentietekst in license.txt.
 
 
 Wegwijzerkaart - grafische interface voor nationale bewegwijzering open data
-Copyright (C) 2016-2017, 2019 Jasper Vries
+Copyright (C) 2016-2017, 2019, 2025 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -200,20 +197,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Wegwijzerkaart. If not, see <http://www.gnu.org/licenses/>.
 
-5.1 MarkerWithLabel for V3
-------------------------------------------------------------------------
-Wegwijzerkaart maakt gebruik van de bibliotheek "MarkerWithLabel for V3"
-door Gary Little. Op deze bibliotheek zijn de Apache 2.0 licentie-
-voorwaarden van toepassing. De bibliotheek is ondergebracht in de submap
-markerwithlabel/ en de licentievoorwaarden van "MarkerWithLabel for V3"
-zijn opgenomen in markerwithlabel/license.txt. De volledige broncode van
-MarkerWithLabel for V3 kan worden gevonden op:
-https://github.com/printercu/google-maps-utility-library-v3-read-only/tree/master/markerwithlabel
-
 
 ========================================================================
 6. Verkrijgen van de broncode
 ========================================================================
 
-De broncode van wegwijzerkaart is gepubliceerd op Bitbucket.
-https://bitbucket.org/jaspervries/wegwijzerkaart
+De broncode van wegwijzerkaart is gepubliceerd op GitHub:
+https://github.com/jaspervries/wegwijzerkaart

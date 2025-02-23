@@ -29,5 +29,26 @@
     </ul>
 </div>
 
+<div id="map-options-container">
+    <fieldset>
+    <legend>Kaartachtergrond</legend>
+        <ul id="map-tile"></ul>
+    </fieldset>
+    <fieldset>
+    <legend>Kaartweergave</legend>	
+		<ul id="map-style">
+            <li><input type="radio" name="map-style" id="map-style-default"><label for="map-style-default">Standaard</label><br></li>
+            <li><input type="radio" name="map-style" id="map-style-lighter"><label for="map-style-lighter">Lichter</label><br></li>
+            <li><input type="radio" name="map-style" id="map-style-grayscale"><label for="map-style-grayscale">Grijswaarden</label><br></li>
+            <li><input type="radio" name="map-style" id="map-style-dark"><label for="map-style-dark">Donker</label><br></li>
+            <li><input type="radio" name="map-style" id="map-style-oldskool"><label for="map-style-oldskool">Vergeeld</label></li>
+        </ul>
+    </fieldset>
+</div>
+
+<div id="map-loading">
+    <span>Bezig met laden...</span>
+</div>
+
 </body>
 </html>

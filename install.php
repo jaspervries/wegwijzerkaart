@@ -30,11 +30,12 @@ $cfg_db[\'pass\'] = \'\';
 $cfg_db[\'db\'] = \'wwk\';
 
 //Resources
-$cfg_resource[\'KP\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/KP.TXT\';
-$cfg_resource[\'WW\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/WW.TXT\';
-$cfg_resource[\'kpxy\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/kpxy.csv\';
-$cfg_resource[\'wwxy\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/wwxy.csv\';
-$cfg_resource[\'image_base\'] = \'https://www.rijkswaterstaat.nl/apps/geoservices/geodata/regios/civ/bewegwijzering_open/\'; //met afsluitende slash
+$cfg_resource[\'KP\'] = \'https://downloads.rijkswaterstaatdata.nl/bewegwijzering/KP.TXT\';
+$cfg_resource[\'WW\'] = \'https://downloads.rijkswaterstaatdata.nl/bewegwijzering/WW.TXT\';
+$cfg_resource[\'kpxy\'] = \'https://downloads.rijkswaterstaatdata.nl/bewegwijzering/kpxy.csv\';
+$cfg_resource[\'wwxy\'] = \'https://downloads.rijkswaterstaatdata.nl/bewegwijzering/wwxy.csv\';
+$cfg_resource[\'image_base\'] = \'https://downloads.rijkswaterstaatdata.nl/bewegwijzering/\'; //met afsluitende slash
+$cfg_resource[\'photo_base\'] = \'https://maps.rijkswaterstaat.nl/ExterneDocumentenBasis/SignWeb/Afbeeldingen/\'; //met afsluitende slash
 $cfg_resource[\'uselocalimages\'] = FALSE; //gebruik lokale kruispuntplaatjes en specificatiestaten (TRUE) of verwijs altijd naar afbeeldingen op opendataportaal (FALSE)
 
 //Tijdlimieten (seconden)
@@ -42,11 +43,6 @@ $cfg_runtime_limit = 160; //maximale tijd die het script actief mag zijn
 $cfg_timeout_limit = 3000; //tijd die verstreken moet zijn om het script te mogen herstarten wanneer dit niet correct afgesloten is
 $cfg_runonce_limit = 604800; //tijd die verstreken moet zijn om volledige scriptloop opnieuw te mogen beginnen (standaard 1x volledige uitvoer per week)
 
-//Google
-$cfg_google[\'maps_key\'] = \'\'; //Google Maps API key
-/* unused
-$cfg_google[\'analytics_key\'] = \'\'; //UA-trackernummer; laat leeg om Google Analytics tracking niet te gebruiken
-*/
 ?>
 ';
 	file_put_contents('config.cfg.php', $config);

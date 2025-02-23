@@ -151,6 +151,13 @@ if ($_GET['type'] == 'dialogww') {
 		else {
 			$html .= '<p class="warning">Geen specificatie beschikbaar voor deze wegwijzer.</p>';
 		}
+		//kijk of er een foto is
+		$photo_url = $cfg_resource['photo_base'] . $kp_nr . $ww_nr . 'F.JPG';
+		$headers = @get_headers($photo_url);
+		if(strpos($headers[0],'200')!==false) {
+			$html .= '<p><a href="' . $photo_url . '" target="_blank">Bekijk foto</a></p>';
+		}
+		//link naar open data
 		$html .= '<p><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Naar opendataportaal</a></p>';
 	}
 	//return json

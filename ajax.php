@@ -161,8 +161,17 @@ if ($_GET['type'] == 'dialogww') {
 		$html .= '<p><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Naar opendataportaal</a></p>';
 		//deeplink
 		if (!empty($data['lat']) && !empty($data['lng'])) {
-			$url_base = $_SERVER["REQUEST_SCHEME"] . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]);
-			$url = $url_base . '?q=' . $kp_nr . $ww_nr;
+			if (isset($_SERVER['HTTPS']) && //from https://stackoverflow.com/questions/4503135/php-get-site-url-protocol-http-vs-https
+				($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+				isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+				$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+				$protocol = 'https://';
+			}
+			else {
+				$protocol = 'http://';
+			}
+			$url_base = $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]);
+			$url = $protocol . $url_base . '?q=' . $kp_nr . $ww_nr;
 			$html .= '<p>Link naar deze wegwijzer: <a href="' . $url . '">' . $url . '</a></p>';
 		}
 	}

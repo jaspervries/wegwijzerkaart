@@ -30,10 +30,11 @@ function KMGtoBytes($val) {
 	if (is_numeric($val)) {
 		return $val;
 	}
-	if (!is_numeric(substr($val, 0, -1))) {
+	$suffix = substr($val, -1);
+	$val = substr($val, 0, -1);
+	if (!is_numeric($val)) {
 		return FALSE;
 	}
-	$suffix = substr($val, -1);
 	if ($suffix == 'K') {
 		return $val * $factor;
 	}
@@ -67,7 +68,7 @@ $loop_terminated_immaturely = FALSE;
 //$html = curl_get_contents($cfg_resource['image_base']);
 $html = file_get_contents($cfg_resource['image_base']);
 //verkrijg alle mappen op pagina
-preg_match_all('#<tr>.*\[DIR].*href="([0-9]{5}/)"#U', $html, $main_dir_folders);
+preg_match_all('#<a href="([0-9]{5}/)"#U', $html, $main_dir_folders);
 foreach($main_dir_folders[1] as $folder) {
 	//controleer of deze moet worden overgeslagen
 	if (substr($folder, 0, -1) < (floor($startat/1000)*1000)) continue;
@@ -75,7 +76,7 @@ foreach($main_dir_folders[1] as $folder) {
 	//$html = curl_get_contents($cfg_resource['image_base'].$folder);
 	$html = file_get_contents($cfg_resource['image_base'].$folder);
 	//verkrijg alle kruispunten in map
-	preg_match_all('#<tr>.*\[DIR].*href="([0-9]{5}/)"#U', $html, $kruispunten);
+	preg_match_all('#<a href="([0-9]{5}/)"#U', $html, $kruispunten);
 	foreach($kruispunten[1] as $kruispunt) {
 		$current_item = substr($kruispunt, 0, -1);
 		//controleer of deze moet worden overgeslagen
@@ -84,8 +85,8 @@ foreach($main_dir_folders[1] as $folder) {
 		//$html = curl_get_contents($cfg_resource['image_base'].$folder.$kruispunt);
 		$html = file_get_contents($cfg_resource['image_base'].$folder.$kruispunt);
 		//kruispuntschets
-		if (preg_match('#<tr>.*\[IMG].*href="((\d{5})K\.png)".*(\d{2}-[a-z]+-\d{4} \d{2}:\d{2}).*(\d+\.?\d*[KMG])#Ui', $html, $res) > 0) {
-			$kp_nr = $res[2];
+		if (preg_match('#<a href="((\d{5})K\.png)".*(\d{2}-[a-z]+-\d{4} \d{2}:\d{2}).*(\d+\.?\d*[KMG])#Ui', $html, $res) > 0) {
+						$kp_nr = $res[2];
 			$img = $res[1];
 			$date = $res[3];
 			$size = $res[4];
@@ -102,7 +103,7 @@ foreach($main_dir_folders[1] as $folder) {
 			mysqli_query($db['link'], $qry);
 		}
 		//specificatie wegwijzers
-		if (preg_match_all('#<tr>.*\[IMG].*href="(([0-9]{5})([0-9]{3})S\.png)".*(\d{2}-[a-z]+-\d{4} \d{2}:\d{2}).*(\d+\.?\d*[KMG])#Ui', $html, $res, PREG_SET_ORDER) > 0) {
+		if (preg_match_all('#<a href="(([0-9]{5})([0-9]{3})S\.png)".*(\d{2}-[a-z]+-\d{4} \d{2}:\d{2}).*(\d+\.?\d*[KMG])#Ui', $html, $res, PREG_SET_ORDER) > 0) {
 			foreach($res as $item) {
 				$kp_nr = $item[2];
 				$ww_nr = $item[3];

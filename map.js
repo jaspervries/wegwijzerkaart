@@ -80,7 +80,7 @@ function initMap() {
 		L.popup()
 		.setLatLng(e.latlng)
 		.setContent('<h1>' + e.latlng.lat.toFixed(6) + ',' + e.latlng.lng.toFixed(6) + '</h1><p><a href="https://www.google.nl/maps/?q=' + e.latlng.lat + ',' + e.latlng.lng + '&amp;layer=c&cbll=' + e.latlng.lat + ',' + e.latlng.lng + '&amp;cbp=11,' + 0 + ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p><p><a href="https://www.bing.com/maps?cp=' + e.latlng.lat + '~' + e.latlng.lng + '&amp;style=x" target="_blank">Open locatie in Bing Streetside</a></p>')
-		.openOn(map);
+		.openOn(map); //streetside added for wegwijzerkaart
 	})
 	//set map position from cookie, if any
 	if ((typeof onloadCookie !== 'undefined') && ($.isNumeric(onloadCookie[1]))) {
@@ -99,9 +99,9 @@ function initMap() {
 	map.zoomControl.setPosition('topleft');
 	L.control.scale().addTo(map);
 	//set map position from url var
-	var centeratid = getUrlVars()['id'];
+	var centeratid = getUrlVars()['q'];
 	if (typeof centeratid !== 'undefined') {
-		centerMapAtId(centeratid);
+		set_map_from_urlvars(centeratid);  //modified for wegwijzerkaart
 	}
 }
 
@@ -279,7 +279,7 @@ function unloadMarkers(layer) {
 /*
 * center map at location of provided id
 */
-function centerMapAtId(id) {
+/*function centerMapAtId(id) {
 	//get coordinates from database
 	$.getJSON('maplayer.php', { get: 'coordinates', id: id })
 	.done( function(json) {
@@ -291,7 +291,7 @@ function centerMapAtId(id) {
 		map.setView([json['latitude'], json['longitude']], 16);
 		setMapCookie();
 	});
-}
+}*/
 
 /*
 * Set the cookie to remember map center, zoom, style and active layers

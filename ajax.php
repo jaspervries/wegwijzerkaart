@@ -159,6 +159,12 @@ if ($_GET['type'] == 'dialogww') {
 		}
 		//link naar open data
 		$html .= '<p><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Naar opendataportaal</a></p>';
+		//deeplink
+		if (!empty($data['lat']) && !empty($data['lng'])) {
+			$url_base = $_SERVER["REQUEST_SCHEME"] . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]);
+			$url = $url_base . '?q=' . $kp_nr . $ww_nr;
+			$html .= '<p>Link naar deze wegwijzer: <a href="' . $url . '">' . $url . '</a></p>';
+		}
 	}
 	//return json
 	header('Content-type: application/json');
@@ -214,6 +220,36 @@ if ($_GET['type'] == 'search') {
 	//wanneer geen resultaten
 	if (empty($json)) {
 		$json[] = array('label' => 'Geen resultaten');
+	}
+	//return json
+	header('Content-type: application/json');
+	echo json_encode($json);
+}
+
+//urlvars (?q=)
+if ($_GET['type'] == 'urlvars') {
+	$json = array();
+	//verwerk zoekterm
+	$kp_nr = 0;
+	$ww_nr = 0;
+	if (is_numeric($_GET['q'])) {
+		if (strlen($_GET['q']) == 8) {
+			$kp_nr = substr($_GET['q'], 0, 5);
+			$ww_nr = substr($_GET['q'], 5, 3);
+		}
+		//zoek wegwijzers
+		if (($kp_nr > 0) && ($ww_nr > 0)) {
+			$qry = "SELECT `id`, `kp_nr`, `ww_nr`, `lat`, `lng` FROM `ww` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $kp_nr)."' AND `ww_nr` = '".mysqli_real_escape_string($db['link'], $ww_nr)."' AND `actueel` = 1 LIMIT 1";
+			$res = mysqli_query($db['link'], $qry);
+			if (mysqli_num_rows($res)) {
+				$data = mysqli_fetch_assoc($res);
+				$json['latlng'] = $data['lat'].','.$data['lng'];
+			}
+		}
+	}
+	//wanneer geen resultaten
+	if (empty($json)) {
+		$json['res'] = false;
 	}
 	//return json
 	header('Content-type: application/json');

@@ -75,6 +75,18 @@ function set_map_center(strlatlng) {
 	}
 }
 
+//centreren van kaart en openen van wegwijzer obv url query
+function set_map_from_urlvars(q) {
+	//get coordinates from database
+	$.getJSON('ajax.php', { type: 'urlvars', q: q })
+	.done( function(json) {
+		if (json.res !== false)
+		set_map_center(json.latlng);
+		open_dialog('ww', q, false)
+		setMapCookie();
+	});
+}
+
 function draw_kruispunten() {
 	let layer = 'kp';
 	$('#map-loading').show();

@@ -1,7 +1,7 @@
 <?php
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016-2017, 2019 Jasper Vries
+Copyright (C) 2016-2017, 2019, 2025 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 

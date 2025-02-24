@@ -8,10 +8,13 @@
 <p>In dit venster wordt de informatie over een kruispunt uit de open dataset weergegeven. Tevens wordt een lijst gegeven van wegwijzers in de open dataset die bij dit kruispunt horen. Door op een dergelijk wegwijzernummer te klikken wordt de specificatie van deze wegwijzer geopend in een nieuw venster.</p>
 
 <h2>Specificatie wegwijzer</h2>
-<p>In dit venster wordt de informatie over een wegwijzer uit de open dataset weergegeven. Door op het kruispuntnummer (in de tabel achter <em>wegwijzernummer</em> te klikken wordt de kruispuntschets van het kruispunt horende bij deze wegwijzer geopend in een nieuw venster.</p>
+<p>In dit venster wordt de informatie over een wegwijzer uit de open dataset weergegeven. Door op het kruispuntnummer (in de tabel achter <em>wegwijzernummer</em>) te klikken wordt de kruispuntschets van het kruispunt horende bij deze wegwijzer geopend in een nieuw venster.</p>
 
 <h2>Vensters sluiten</h2>
 <p>Vensters kunnen middels het kruisje rechtsboven in het venster weer gesloten worden. Door op de <em>Delete</em> toets op het toetsenbord te drukken kunnen alle openstaande vensters in &eacute;&eacute;n keer worden gesloten.</p>
+
+<h2>Streetview/Streetside</h2>
+<p>Door ergens met de rechtermuisknop op de kaart te klikken kan Google Street View&trade; of Bing Streetside van de betreffende locatie in een nieuw browsertabblad worden geopend. Wegwijzerkaart kan niet controleren of daadwerkelijk Streetview/Streetside beschikbaar is van de betreffende locatie.</p>
 
 <h1>Compleetheid dataset</h1>
 <p>De compleetheid van Wegwijzerkaart hangt samen met de compleetheid van de open dataset. Wat er niet in de open dataset zit, kan Wegwijzerkaart ook niet tonen. De actuele compleetheid van Wegwijzerkaart wordt in onderstaande tabel weergegeven.</p>

@@ -83,7 +83,7 @@ if ($_GET['type'] == 'dialogkp') {
 		$html .= '<tr><td>kruispunt:</td><td>'.htmlspecialchars($data['naam']).'</td></tr>';
 		$html .= '<tr><td>gemeente:</td><td>'.htmlspecialchars(ucwords(strtolower($data['gemeente']))).'</td></tr>';
 		$html .= '<tr><td>provincie:</td><td>'.(array_key_exists($data['provincie'], $ww_types['provincie']) ? $ww_types['provincie'][$data['provincie']] : htmlspecialchars($data['provincie'])).'</td></tr>';
-		$html .= '<tr><td>WGS 84:</td><td>'.(!empty($data['lat']) ? round($data['lat'],7).','.round($data['lng'],7) : 'onbekend').'</td></tr>';
+		$html .= '<tr><td>WGS 84:</td><td>' . (!empty($data['lat']) ? '<span class="wgs84-dialog">' . round($data['lat'],7) . ',' . round($data['lng'],7) . '</span>' : 'onbekend') . '</td></tr>';
 		if (!empty($data['afbeelding'])) {
 			$html .= '<tr><td>publicatiedatum tekening:</td><td>'.date('d-m-Y H:i', strtotime($data['afbeelding_datum'])).'</td></tr>';
 		}
@@ -123,7 +123,6 @@ if ($_GET['type'] == 'dialogww') {
 	$kp_nr = 'n/b';
 	$qry = "SELECT * FROM `ww` WHERE `id` = '".mysqli_real_escape_string($db['link'], $_GET['id'])."' LIMIT 1";
 	if ($_GET['alt'] == 'true') $qry = "SELECT * FROM `ww` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], substr($_GET['id'], 0, 5))."' AND `ww_nr` = '".mysqli_real_escape_string($db['link'], substr($_GET['id'], 5, 3))."' AND `actueel` = 1 LIMIT 1";
-	$html = $qry;
 	$res = mysqli_query($db['link'], $qry);
 	if (mysqli_num_rows($res)) {
 		$data = mysqli_fetch_assoc($res);
@@ -133,7 +132,7 @@ if ($_GET['type'] == 'dialogww') {
 		$html .= '<tr><td>wegwijzernummer:</td><td><span class="kp-nr-dialog">'.$kp_nr.'</span>/'.$ww_nr.'</td></tr>';
 		$html .= '<tr><td>gemeente:</td><td>'.htmlspecialchars(ucwords(strtolower($data['gemeente']))).'</td></tr>';
 		$html .= '<tr><td>provincie:</td><td>'.(array_key_exists($data['provincie'], $ww_types['provincie']) ? $ww_types['provincie'][$data['provincie']] : htmlspecialchars($data['provincie'])).'</td></tr>';
-		$html .= '<tr><td>WGS 84:</td><td>'.(!empty($data['lat']) ? round($data['lat'],7).','.round($data['lng'],7) : 'onbekend').'</td></tr>';
+		$html .= '<tr><td>WGS 84:</td><td>' . (!empty($data['lat']) ? '<span class="wgs84-dialog">' . round($data['lat'],7) . ',' . round($data['lng'],7) . '</span>' : 'onbekend') . '</td></tr>';
 		$html .= '<tr><td>uitvoering:</td><td>'.(array_key_exists($data['uitvoering'], $ww_types['uitvoering']) ? $ww_types['uitvoering'][$data['uitvoering']] : $data['uitvoering']).'</td></tr>';
 		$html .= '<tr><td>type wegwijzer:</td><td>'.(array_key_exists($data['type_wegwijzer'], $ww_types['type_wegwijzer']) ? $ww_types['type_wegwijzer'][$data['type_wegwijzer']] : $data['type_wegwijzer']).'</td></tr>';
 		$html .= '<tr><td>type constructie:</td><td>'.(array_key_exists($data['type_constructie'], $ww_types['type_constructie']) ? $ww_types['type_constructie'][$data['type_constructie']] : $data['type_constructie']).'</td></tr>';

@@ -47,7 +47,7 @@ $ud = mysqli_fetch_row($res);
 <tr><th>Meest recente specificatietekening</th><td><?php echo htmlspecialchars($ww[3]); ?></td></tr>
 <tr><th>Laatste update wegwijzerkaart</th><td><?php echo date('Y-m-d H:i:s', $ud[0]); ?></td></tr>
 </table>
-<p>Voor meer informatie over de open dataset wordt verwezen naar de <a href="https://www.bewegwijzeringsdienst.nl/home/producten-en-diensten/open-data/">Nationale Bewegwijzeringsdienst</a>.</p>
+<p>Voor meer informatie over de open dataset wordt verwezen naar de <a href="https://bewegwijzeringsdienst.nl/home/voor-wegbeheerders/databeheer/">Nationale Bewegwijzeringsdienst</a>.</p>
 
 <h1>Contact</h1>
 <p>Stuur bij vragen, opmerkingen, suggesties of klachten over deze website een e-mail naar <img src="contact.png" width="103" height="18" alt="contact" style="vertical-align:text-top;">.</p>

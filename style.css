@@ -186,7 +186,7 @@ span.ww-nr-dialog {
 	padding: 1px 2px;
 	margin: 2px;
 }
-span.ww-nr-dialog:hover, span.kp-nr-dialog:hover {
+span.ww-nr-dialog:hover, span.kp-nr-dialog:hover, span.wgs84-dialog:hover {
 	background-color: #CCC;
 	cursor: pointer;
 }

@@ -256,3 +256,7 @@ $(document).on('click', '.kp-nr-dialog', function() {
 	var id = $(this).html();
 	open_dialog('kp', id, true);
 });
+//centreer kaart bij klikken op coordinaat
+$(document).on('click', '.wgs84-dialog', function() {
+	set_map_center($(this).html());
+});

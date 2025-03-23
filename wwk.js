@@ -209,9 +209,9 @@ function open_dialog(type, id, alt_method) {
 	if($("#" + div_id).length == 0) {
 		$('body').append('<div class="dialog" id="' + div_id + '">laden...</div>');
 	}
-	var position = { my: "left center", at: "left center", of: window };
-	if (type == 'ww') position = { my: "right center", at: "right center", of: window };
-	else if (type == 'help') position = { my: "center center", at: "center center", of: window };
+	var position = { my: "left top+30", at: "left top", of: window };
+	if (type == 'ww') position = { my: "right top+30", at: "right top", of: window };
+	else if (type == 'help') position = { my: "center top+30", at: "center top", of: window };
 	//create dialog
 	$('#' + div_id).dialog({
 		height: $(window).height() - 30,
@@ -233,6 +233,21 @@ function open_dialog(type, id, alt_method) {
 			title: titletype + ' ' + json.title
 		});
 		$('#' + div_id).html(json.html);
+		//toggle width by clicking on image
+		$('#' + div_id + ' img').click(function() {
+			if ($('#' + div_id).dialog('option', 'width') <= ($(window).width() / 3)) {
+				$('#' + div_id).dialog('option', {
+					'width': $(window).width() - 100,
+					position: position
+				});
+			}
+			else {
+				$('#' + div_id).dialog('option', {
+					'width': $(window).width() / 3,
+					position: position
+				});
+			}
+		})
 	})
 	.fail( function (jqxhr, textStatus, error) {
 		$('#' + div_id).dialog({

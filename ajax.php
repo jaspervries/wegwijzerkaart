@@ -21,6 +21,19 @@ include('types.cfg.php');
 include('functions/bounds_to_sql.php');
 $db['link'] = mysqli_connect($cfg_db['host'], $cfg_db['user'], $cfg_db['pass'], $cfg_db['db']);
 mysqli_set_charset($db['link'], "latin1");
+
+function get_protocol() {
+	if (isset($_SERVER['HTTPS']) && //from https://stackoverflow.com/questions/4503135/php-get-site-url-protocol-http-vs-https
+		($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+		isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+		$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+		return 'https://';
+	}
+	else {
+		return 'http://';
+	}
+}
+
 //kruispunten
 if ($_GET['type'] == 'kp') {
 	$qry = "SELECT `id`, `kp_nr`, `lat`, `lng` FROM `kp`
@@ -111,7 +124,14 @@ if ($_GET['type'] == 'dialogkp') {
 		else {
 			$html .= '<p class="warning">Geen kruispuntschets beschikbaar voor dit kruispunt.</p>';
 		}
+		//link naar open data
 		$html .= '<p><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Naar opendataportaal</a></p>';
+		//deeplink
+		if (!empty($data['lat']) && !empty($data['lng'])) {
+			$url_base = $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]);
+			$url = get_protocol() . $url_base . '?q=' . $kp_nr;
+			$html .= '<p>Link naar dit kruispunt: <a href="' . $url . '">' . $url . '</a></p>';
+		}
 	}
 	//return json
 	header('Content-type: application/json');
@@ -160,17 +180,8 @@ if ($_GET['type'] == 'dialogww') {
 		$html .= '<p><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Naar opendataportaal</a></p>';
 		//deeplink
 		if (!empty($data['lat']) && !empty($data['lng'])) {
-			if (isset($_SERVER['HTTPS']) && //from https://stackoverflow.com/questions/4503135/php-get-site-url-protocol-http-vs-https
-				($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
-				isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-				$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-				$protocol = 'https://';
-			}
-			else {
-				$protocol = 'http://';
-			}
 			$url_base = $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]);
-			$url = $protocol . $url_base . '?q=' . $kp_nr . $ww_nr;
+			$url = get_protocol() . $url_base . '?q=' . $kp_nr . '/' . $ww_nr;
 			$html .= '<p>Link naar deze wegwijzer: <a href="' . $url . '">' . $url . '</a></p>';
 		}
 	}
@@ -237,21 +248,37 @@ if ($_GET['type'] == 'search') {
 //urlvars (?q=)
 if ($_GET['type'] == 'urlvars') {
 	$json = array();
-	//verwerk zoekterm
-	$kp_nr = 0;
-	$ww_nr = 0;
-	if (is_numeric($_GET['q'])) {
-		if (strlen($_GET['q']) == 8) {
+	//kruispunt
+	if (isset($_GET['kp']) && ($_GET['kp'] == 1)) {
+		$kp_nr = 0;
+		if (is_numeric($_GET['q']) && (strlen($_GET['q']) == 5)) {
+			$kp_nr = $_GET['q'];
+			//zoek wegwijzers
+			if ($kp_nr > 0) {
+				$qry = "SELECT `id`, `kp_nr`, `lat`, `lng` FROM `kp` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $kp_nr)."' AND `actueel` = 1 LIMIT 1";
+				$res = mysqli_query($db['link'], $qry);
+				if (mysqli_num_rows($res)) {
+					$data = mysqli_fetch_assoc($res);
+					$json['latlng'] = $data['lat'].','.$data['lng'];
+				}
+			}
+		}
+	}
+	//wegwijzer
+	else {
+		$kp_nr = 0;
+		$ww_nr = 0;
+		if (is_numeric($_GET['q']) && (strlen($_GET['q']) == 8)) {
 			$kp_nr = substr($_GET['q'], 0, 5);
 			$ww_nr = substr($_GET['q'], 5, 3);
-		}
-		//zoek wegwijzers
-		if (($kp_nr > 0) && ($ww_nr > 0)) {
-			$qry = "SELECT `id`, `kp_nr`, `ww_nr`, `lat`, `lng` FROM `ww` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $kp_nr)."' AND `ww_nr` = '".mysqli_real_escape_string($db['link'], $ww_nr)."' AND `actueel` = 1 LIMIT 1";
-			$res = mysqli_query($db['link'], $qry);
-			if (mysqli_num_rows($res)) {
-				$data = mysqli_fetch_assoc($res);
-				$json['latlng'] = $data['lat'].','.$data['lng'];
+			//zoek wegwijzers
+			if (($kp_nr > 0) && ($ww_nr > 0)) {
+				$qry = "SELECT `id`, `kp_nr`, `ww_nr`, `lat`, `lng` FROM `ww` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $kp_nr)."' AND `ww_nr` = '".mysqli_real_escape_string($db['link'], $ww_nr)."' AND `actueel` = 1 LIMIT 1";
+				$res = mysqli_query($db['link'], $qry);
+				if (mysqli_num_rows($res)) {
+					$data = mysqli_fetch_assoc($res);
+					$json['latlng'] = $data['lat'].','.$data['lng'];
+				}
 			}
 		}
 	}

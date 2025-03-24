@@ -77,14 +77,32 @@ function set_map_center(strlatlng) {
 
 //centreren van kaart en openen van wegwijzer obv url query
 function set_map_from_urlvars(q) {
-	//get coordinates from database
-	$.getJSON('ajax.php', { type: 'urlvars', q: q })
-	.done( function(json) {
-		if (json.res !== false)
-		set_map_center(json.latlng);
-		open_dialog('ww', q, false)
-		setMapCookie();
-	});
+	//bepaal wegwijzer
+	var ww = q.match(/^(\d{5})\/?(\d{3})$/);
+	if ((ww != null) && (ww[1] != 0) && (ww[2] != 0)) {
+		//get coordinates from database
+		$.getJSON('ajax.php', { type: 'urlvars', q: ww[1] + ww[2] })
+		.done( function(json) {
+			if (json.res !== false) {
+				set_map_center(json.latlng);
+				open_dialog('ww', ww[1] + ww[2], false);
+				setMapCookie();
+			}
+		});
+	}
+	//bepaal kruispunt
+	var kp = q.match(/^(\d{5})$/);
+	if ((kp != null) && (kp[1] != 0)) {
+		//get coordinates from database
+		$.getJSON('ajax.php', { type: 'urlvars', q: kp[1], kp: 1 })
+		.done( function(json) {
+			if (json.res !== false) {
+				set_map_center(json.latlng);
+				open_dialog('kp', kp[1], false);
+				setMapCookie();
+			}
+		});
+	}
 }
 
 function draw_kruispunten() {

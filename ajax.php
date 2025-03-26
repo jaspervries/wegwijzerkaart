@@ -124,14 +124,16 @@ if ($_GET['type'] == 'dialogkp') {
 		else {
 			$html .= '<p class="warning">Geen kruispuntschets beschikbaar voor dit kruispunt.</p>';
 		}
+		$html .= '<table class="fw"><tr>';
 		//link naar open data
-		$html .= '<p><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Naar opendataportaal</a></p>';
+		$html .= '<td><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Opendataportaal</a></td>';
 		//deeplink
 		if (!empty($data['lat']) && !empty($data['lng'])) {
 			$url_base = $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]);
 			$url = get_protocol() . $url_base . '?q=' . $kp_nr;
-			$html .= '<p>Link naar dit kruispunt: <a href="' . $url . '">' . $url . '</a></p>';
+			$html .= '<td><a href="' . $url . '" class="share">' . $kp_nr . '</a></td>';
 		}
+		$html .= '</tr></table>';
 	}
 	//return json
 	header('Content-type: application/json');
@@ -170,20 +172,22 @@ if ($_GET['type'] == 'dialogww') {
 		else {
 			$html .= '<p class="warning">Geen specificatie beschikbaar voor deze wegwijzer.</p>';
 		}
+		$html .= '<table class="fw"><tr>';
+		//link naar open data
+		$html .= '<td><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Opendataportaal</a></td>';
 		//kijk of er een foto is
 		$photo_url = $cfg_resource['photo_base'] . $kp_nr . $ww_nr . 'F.JPG';
 		$headers = @get_headers($photo_url);
 		if(strpos($headers[0],'200')!==false) {
-			$html .= '<p><a href="' . $photo_url . '" target="_blank">Bekijk foto</a></p>';
+			$html .= '<td><a href="' . $photo_url . '" target="_blank">Foto</a></td>';
 		}
-		//link naar open data
-		$html .= '<p><a href="'.$cfg_resource['image_base'].substr($kp_nr, 0, 2).'000/'.$kp_nr.'/" target="_blank">Naar opendataportaal</a></p>';
 		//deeplink
 		if (!empty($data['lat']) && !empty($data['lng'])) {
 			$url_base = $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]);
 			$url = get_protocol() . $url_base . '?q=' . $kp_nr . '/' . $ww_nr;
-			$html .= '<p>Link naar deze wegwijzer: <a href="' . $url . '">' . $url . '</a></p>';
+			$html .= '<td><a href="' . $url . '" class="share">' . $kp_nr . '/' . $ww_nr . '</a></td>';
 		}
+		$html .= '</tr></table>';
 	}
 	//return json
 	header('Content-type: application/json');

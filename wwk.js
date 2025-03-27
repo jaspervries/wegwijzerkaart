@@ -196,7 +196,7 @@ function draw_wegwijzers() {
 						permanent: true, 
 						interactive: true,
 						direction: 'right',
-						className: 'markerlabel'
+						className: 'markerlabel ww-type-' + v[5]
 					}).on('click', function(e) {
 						open_dialog('ww', marker.options.x_id);
 					});

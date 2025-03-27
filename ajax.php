@@ -63,7 +63,7 @@ if ($_GET['type'] == 'ww') {
 	for ($i = 0; $i < count($coords); $i++) {
 		$coords[$i] = explode(', ', $coords[$i]);
 	}
-	$qry = "SELECT `id`, `ww_nr`, `lat`, `lng`, `kp_nr` FROM `ww`
+	$qry = "SELECT `id`, `ww_nr`, `lat`, `lng`, `kp_nr`, `type_wegwijzer` FROM `ww`
 	WHERE `lat` != 0
 	AND `lng` != 0
 	AND " . bounds_to_sql($_GET['bounds']) . "
@@ -73,8 +73,14 @@ if ($_GET['type'] == 'ww') {
 	if (mysqli_num_rows($res)) {
 		$content = array();
 		while ($data = mysqli_fetch_row($res)) {
+			//bepaal type
+			$type = 'o';
+			if (in_array($data[5], $ww_types['voet_type'])) $type = 'v';
+			elseif (in_array($data[5], $ww_types['fiets_type'])) $type = 'f';
+			elseif (in_array($data[5], $ww_types['auto_type'])) $type = 'a';
 			//add to output
-			$content[] = array($data[0], str_pad($data[1], 3, '0', STR_PAD_LEFT), $data[2], $data[3], str_pad($data[4], 5, '0', STR_PAD_LEFT).'/'.str_pad($data[1], 3, '0', STR_PAD_LEFT));
+			$content[] = array($data[0], str_pad($data[1], 3, '0', STR_PAD_LEFT), $data[2], $data[3], str_pad($data[4], 5, '0', STR_PAD_LEFT).'/'.str_pad($data[1], 3, '0', STR_PAD_LEFT), $type);
+
 		}
 	}
 	//return json

@@ -311,6 +311,15 @@ img.map-style-oldskool {
 .markerlabel::before {
 	border: none;
 }
+.markerlabel.ww-type-a {
+	color: #008;
+}
+.markerlabel.ww-type-f {
+	color: #800;
+}
+.markerlabel.ww-type-v {
+	color: #640;
+}
 
 /* map messages */
 #map-loading {	

@@ -88,4 +88,8 @@ $ww_types['provincie']['UT'] = 'Utrecht';
 $ww_types['provincie']['ZE'] = 'Zeeland';
 $ww_types['provincie']['ZH'] = 'Zuid-Holland';
 
+$ww_types['voet_type'] = array('Q');
+$ww_types['fiets_type'] = array('F', 'T');
+$ww_types['auto_type'] = array('L', 'V', 'B', 'R', 'D', 'E', 'A', 'H', 'S', 'M');
+
 ?>

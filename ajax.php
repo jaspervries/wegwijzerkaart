@@ -107,9 +107,9 @@ if ($_GET['type'] == 'dialogkp') {
 			$html .= '<div rel="'.$kp_nr.'">Wegwijzers: ';
 			while ($row = mysqli_fetch_row($res)) {
 				$html .= '<span class="ww-nr-dialog';
-				if (in_array($row[2], array('F', 'T'))) $html .= ' ww-type-fiets';
-				elseif ($row[2] == 'Q') $html .= ' ww-type-voet';
-				elseif (in_array($row[2], array('L', 'V', 'B', 'R', 'D', 'E', 'A', 'H', 'S', 'M'))) $html .= ' ww-type-auto';
+				if (in_array($row[2], $ww_types['voet_type'])) $html .= ' ww-type-voet';
+				elseif (in_array($row[2], $ww_types['fiets_type'])) $html .= ' ww-type-fiets';
+				elseif (in_array($row[2], $ww_types['auto_type'])) $html .= ' ww-type-auto';
 				$html .= '">'.str_pad($row[1], 3, '0', STR_PAD_LEFT).'</span>';
 			}
 			$html .= '</div>';

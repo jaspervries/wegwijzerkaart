@@ -11,6 +11,7 @@
 <script src="bundled/jquery-ui/jquery-ui.min.js"></script>
 <script src="bundled/js-cookie/js.cookie.min.js"></script>
 <script src="bundled/leaflet/leaflet.js"></script>
+<script src="bundled/leaflet-tilelayer-colorfilter/src/leaflet-tilelayer-colorfilter.min.js"></script>
 <script src="map.js"></script>
 <script src="wwk.js"></script>
 </head>

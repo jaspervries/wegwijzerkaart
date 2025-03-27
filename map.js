@@ -29,7 +29,7 @@ var selectedTileLayer = 0;
 var tileLayers = [
 	{
 		name: 'BRT Achtergrondkaart',
-		layer: L.tileLayer('https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png', {
+		layer: L.tileLayer.colorFilter('https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png', {
 			minZoom: 6,
 			maxZoom: 19,
 			bounds: [[50.5, 3.25], [54, 7.6]],
@@ -38,7 +38,7 @@ var tileLayers = [
 	},
 	{
 		name: 'Luchtfoto',
-		layer: L.tileLayer('https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_orthoHR/EPSG:3857/{z}/{x}/{y}.jpeg', {
+		layer: L.tileLayer.colorFilter('https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_orthoHR/EPSG:3857/{z}/{x}/{y}.jpeg', {
 			minZoom: 6,
 			maxZoom: 19,
 			bounds: [[50.5, 3.25], [54, 7.6]],
@@ -47,12 +47,19 @@ var tileLayers = [
 	},
 	{
 		name: 'OpenStreetMap',
-		layer: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		layer: L.tileLayer.colorFilter('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			maxZoom: 19,
 			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		})
 	}
 ];
+var tileFilters = {
+	'map-style-default': [],
+	'map-style-grayscale': ['grayscale:100%', 'brightness:110%'],
+	'map-style-lighter': ['brightness:105%', 'contrast:110%', 'grayscale:10%'],
+	'map-style-dark': ['invert:100%', 'grayscale:100%'],
+	'map-style-oldskool': ['sepia:50%', 'brightness:105%']
+};
 var onloadCookie;
 var markers = {};
 var maplayers = {};
@@ -71,7 +78,6 @@ function initMap() {
 	map.on('moveend', function() {
 		//store map position and zoom in cookie
 		setMapCookie();
-		updateMapStyle();
 		updateMapLayers();
 		set_zoom_warning(); //added for wegwijzerkaart
 	});
@@ -118,7 +124,6 @@ function setMapTileLayer(tile_id) {
 		}
 	}
 	selectedTileLayer = tile_id;
-	updateMapStyle();
 	setMapCookie();
 }
 
@@ -135,12 +140,11 @@ function getMapStyle() {
 	}
 	//set correct radio button
 	$('#' + selectedMapStyle).prop('checked', true);
-	//update map style
-	updateMapStyle();
 }
 
 /*
 * Set the map style and store it in the cookie
+* Changed to leaflet-tilelayer-colorfilter for wegwijzerkaart
 */
 function setMapStyle(style_id) {
 	if ((style_id == 'map-style-grayscale') || (style_id == 'map-style-lighter') || (style_id == 'map-style-dark') || (style_id == 'map-style-oldskool') || (style_id == 'map-style-cycle')) {
@@ -149,21 +153,10 @@ function setMapStyle(style_id) {
 	else {
 		selectedMapStyle = 'map-style-default';
 	}
-	setMapCookie();
-}
-
-/*
-* Apply or remove a CSS style when the user changes the map style or the map
-*/
-function updateMapStyle() {
-	$('img.leaflet-tile').removeClass('map-style-grayscale');
-	$('img.leaflet-tile').removeClass('map-style-lighter');
-	$('img.leaflet-tile').removeClass('map-style-dark');
-	$('img.leaflet-tile').removeClass('map-style-oldskool');
-	//map recolor
-	if ((selectedMapStyle == 'map-style-grayscale') || (selectedMapStyle == 'map-style-lighter') ||  (selectedMapStyle == 'map-style-dark') || (selectedMapStyle == 'map-style-oldskool')) {
-		$('img.leaflet-tile').addClass(selectedMapStyle);
+	for (var i = 0; i < tileLayers.length; i++) {
+		tileLayers[i].layer.updateFilter(tileFilters[selectedMapStyle]);
 	}
+	setMapCookie();
 }
 
 /*
@@ -426,7 +419,6 @@ $(function() {
 	//handle to change map style
 	$('#map-style input').change( function() {
 		setMapStyle(this.id);
-		updateMapStyle();
 	});
 	initLayerGUI();
 });

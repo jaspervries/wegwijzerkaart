@@ -421,6 +421,21 @@ $(function() {
 		setMapStyle(this.id);
 	});
 	initLayerGUI();
+	//shade mapoptions
+	$('#map-options-container fieldset legend').click(function() {
+		if ($(this).next().is(':visible')) {
+			$(this).next().hide();
+			$(this).parent().addClass('hidden');
+		}
+		else {
+			$(this).next().show();
+			$(this).parent().removeClass('hidden');
+		}
+		
+	});
+	//default hide mapoptions
+	$('#map-options-container fieldset ul').hide();
+	$('#map-options-container fieldset ul').parent().addClass('hidden');
 });
 
 

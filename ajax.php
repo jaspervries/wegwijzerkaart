@@ -1,7 +1,7 @@
 <?php 
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016-2017, 2025 Jasper Vries
+Copyright (C) 2016-2017, 2025, 2026 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -188,11 +188,11 @@ if ($_GET['type'] == 'dialogww') {
 			$html .= '<td><a href="' . $photo_url . '" target="_blank">Foto</a></td>';
 		}
 		//deeplink
-		if (!empty($data['lat']) && !empty($data['lng'])) {
+		//if (!empty($data['lat']) && !empty($data['lng'])) {
 			$url_base = $_SERVER['SERVER_NAME'] . dirname($_SERVER["SCRIPT_NAME"]);
 			$url = get_protocol() . $url_base . '?q=' . $kp_nr . '/' . $ww_nr;
 			$html .= '<td><a href="' . $url . '" class="share">' . $kp_nr . '/' . $ww_nr . '</a></td>';
-		}
+		//}
 		$html .= '</tr></table>';
 	}
 	//return json
@@ -258,40 +258,50 @@ if ($_GET['type'] == 'search') {
 //urlvars (?q=)
 if ($_GET['type'] == 'urlvars') {
 	$json = array();
-	//kruispunt
-	if (isset($_GET['kp']) && ($_GET['kp'] == 1)) {
-		$kp_nr = 0;
-		if (is_numeric($_GET['q']) && (strlen($_GET['q']) == 5)) {
-			$kp_nr = $_GET['q'];
-			//zoek wegwijzers
-			if ($kp_nr > 0) {
-				$qry = "SELECT `id`, `kp_nr`, `lat`, `lng` FROM `kp` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $kp_nr)."' AND `actueel` = 1 LIMIT 1";
-				$res = mysqli_query($db['link'], $qry);
-				if (mysqli_num_rows($res)) {
-					$data = mysqli_fetch_assoc($res);
-					$json['latlng'] = $data['lat'].','.$data['lng'];
-				}
-			}
-		}
-	}
+	$kp_nr = 0;
+	$ww_nr = 0;
 	//wegwijzer
-	else {
-		$kp_nr = 0;
-		$ww_nr = 0;
-		if (is_numeric($_GET['q']) && (strlen($_GET['q']) == 8)) {
-			$kp_nr = substr($_GET['q'], 0, 5);
-			$ww_nr = substr($_GET['q'], 5, 3);
-			//zoek wegwijzers
-			if (($kp_nr > 0) && ($ww_nr > 0)) {
-				$qry = "SELECT `id`, `kp_nr`, `ww_nr`, `lat`, `lng` FROM `ww` WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $kp_nr)."' AND `ww_nr` = '".mysqli_real_escape_string($db['link'], $ww_nr)."' AND `actueel` = 1 LIMIT 1";
-				$res = mysqli_query($db['link'], $qry);
-				if (mysqli_num_rows($res)) {
-					$data = mysqli_fetch_assoc($res);
-					$json['latlng'] = $data['lat'].','.$data['lng'];
-				}
+	if (is_numeric($_GET['q']) && (strlen($_GET['q']) == 8)) {
+		$kp_nr = substr($_GET['q'], 0, 5);
+		$ww_nr = substr($_GET['q'], 5, 3);
+		//zoek wegwijzers
+		if (($kp_nr > 0) && ($ww_nr > 0)) {
+			$qry = "SELECT `id`, `kp_nr`, `ww_nr`, `lat`, `lng` FROM `ww` 
+			WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $kp_nr)."' 
+			AND `ww_nr` = '".mysqli_real_escape_string($db['link'], $ww_nr)."'
+			AND `lat` != 0
+			AND `lng` != 0
+			AND `actueel` = 1 
+			LIMIT 1";
+			$res = mysqli_query($db['link'], $qry);
+			if (mysqli_num_rows($res)) {
+				$data = mysqli_fetch_assoc($res);
+				$json['latlng'] = $data['lat'].','.$data['lng'];
 			}
 		}
 	}
+
+	//kruispunt, als kruispunt of als wegwijzer geen coordinaten heeft
+	if (is_numeric($_GET['q']) && 
+	((isset($_GET['kp']) && ($_GET['kp'] == 1) && (strlen($_GET['q']) == 5))
+	|| ((strlen($_GET['q']) == 8) && empty($json)))) {
+		$kp_nr = substr($_GET['q'], 0, 5);
+		//zoek kruispunt
+		if ($kp_nr > 0) {
+			$qry = "SELECT `id`, `kp_nr`, `lat`, `lng` FROM `kp` 
+			WHERE `kp_nr` = '".mysqli_real_escape_string($db['link'], $kp_nr)."'
+			AND `lat` != 0
+			AND `lng` != 0
+			AND `actueel` = 1 
+			LIMIT 1";
+			$res = mysqli_query($db['link'], $qry);
+			if (mysqli_num_rows($res)) {
+				$data = mysqli_fetch_assoc($res);
+				$json['latlng'] = $data['lat'].','.$data['lng'];
+			}
+		}
+	}
+	
 	//wanneer geen resultaten
 	if (empty($json)) {
 		$json['res'] = false;

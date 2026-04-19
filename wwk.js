@@ -1,6 +1,6 @@
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016, 2025 Jasper Vries
+Copyright (C) 2016, 2025, 2026 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -50,6 +50,8 @@ $( document ).ready(function() {
 	$('#help').click( function() {
 		open_dialog('help', 0)
 	});
+	//verberg sluiten dialog optie
+	$('#li-closeall').hide();
 });
 
 //waarschuwing wanneer niet ver genoeg ingezoomd
@@ -239,6 +241,7 @@ function open_dialog(type, id, alt_method) {
 		close: function() {
 			//remove dialog on close
 			$(this).remove();
+			check_close_dialogs();
 		}
 	});
 	//load dialog content
@@ -277,6 +280,7 @@ function open_dialog(type, id, alt_method) {
 		console.log(textStatus);
 		console.log(error);
 	});
+	show_close_dialogs();
 }
 
 //open wegwijzer dialog vanuit kruispunt dialog
@@ -292,4 +296,22 @@ $(document).on('click', '.kp-nr-dialog', function() {
 //centreer kaart bij klikken op coordinaat
 $(document).on('click', '.wgs84-dialog', function() {
 	set_map_center($(this).html());
+});
+
+//toon dialogs sluiten optie
+function show_close_dialogs() {
+	if ($('.dialog').length > 1) {
+		$('#li-closeall').show();
+	}
+}
+//controleer of er nog dialogs zijn
+function check_close_dialogs() {
+	if ($('.dialog').length <= 0) {
+		$('#li-closeall').hide();
+	}
+}
+//verberg alle dialogs
+$(document).on('click', '#li-closeall', function() {
+	$('.dialog').dialog('close');
+	$('#li-closeall').hide();
 });

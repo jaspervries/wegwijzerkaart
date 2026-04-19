@@ -1,6 +1,6 @@
 /*
 This file is part of Wegwijzerkaart
-Copyright (C) 2016, 2025 Jasper Vries
+Copyright (C) 2016, 2025, 2026 Jasper Vries
 
 Wegwijzerkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -305,7 +305,7 @@ img.map-style-oldskool {
 }
 /* markers */
 .markerlabel {
-	font-size: x-small;
+	font-size: 1em;
 	color: #000;
 	text-align: left;
 	white-space: nowrap;

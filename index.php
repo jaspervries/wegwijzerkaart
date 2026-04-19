@@ -10,6 +10,7 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <script src="bundled/jquery/jquery.min.js"></script>
 <script src="bundled/jquery-ui/jquery-ui.min.js"></script>
+<script src="bundled/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 <script src="bundled/js-cookie/js.cookie.min.js"></script>
 <script src="bundled/leaflet/leaflet.js"></script>
 <script src="bundled/leaflet-tilelayer-colorfilter/src/leaflet-tilelayer-colorfilter.min.js"></script>
